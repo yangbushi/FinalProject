@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+
+    <string name="main_dic">Merriam Webster Dictionary</string>
+    <string name="main_news">News Feed</string>
+    <string name="main_flight">Flight Status tracker</string>
+    <string name="main_article">New York Times Article Search</string>
+
+    <string name="menu_dic">Dictionary</string>
+    <string name="menu_news">News</string>
+    <string name="menu_flight">Flights</string>
+    <string name="menu_article">Articles</string>
+</resources>

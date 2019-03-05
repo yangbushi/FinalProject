@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_dic"
+        android:title="@string/menu_dic"
+        android:icon="@drawable/dic"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+
+    <item android:id="@+id/menu_news"
+        android:title="@string/menu_news"
+        android:icon="@drawable/news"
+        android:orderInCategory="200"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/menu_flight"
+        android:title="@string/menu_flight"
+        android:icon="@drawable/flight"
+        android:orderInCategory="300"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/menu_article"
+        android:title="@string/menu_article"
+        android:icon="@drawable/article"
+        android:orderInCategory="400"
+        app:showAsAction="always"/>
+</menu>
