@@ -8,6 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+/**
+ * The main entry of 'New York Times Article Search'
+ * @author George Yang
+ * @version 1.0.0
+ */
 public class ArticleActivity extends AppCompatActivity {
 
     @Override

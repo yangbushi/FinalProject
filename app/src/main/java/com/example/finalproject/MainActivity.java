@@ -9,6 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 
+/**
+ * The main entry of the application
+ * @author George Yang
+ * @version 1.0.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
+        // Jump to 'New York Times Article Search' by clicking the relative button
         Button articleButton = (Button)findViewById(R.id.article_button);
         articleButton.setOnClickListener(v->{
             Intent articleIntent = new Intent(this, ArticleActivity.class);
@@ -34,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Jump to different activity / function based on the menu icon clicked
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
