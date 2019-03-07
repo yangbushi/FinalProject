@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">期末应用</string>
+
+    <!-- the strings in the main page -->
+    <string name="main_dic">词典</string>
+    <string name="main_news">新闻</string>
+    <string name="main_flight">航班</string>
+    <string name="main_article">文章</string>
+
+    <!-- the strings for the menu -->
+    <string name="menu_dic">词典</string>
+    <string name="menu_news">新闻</string>
+    <string name="menu_flight">航班</string>
+    <string name="menu_article">文章</string>
+
+    <!-- the strings for the article page -->
+    <string name="article_test">文章</string>
+</resources>

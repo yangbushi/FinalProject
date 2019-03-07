@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">FinalProject</string>
 
+    <!-- the strings in the main page -->
     <string name="main_dic">Merriam Webster Dictionary</string>
     <string name="main_news">News Feed</string>
     <string name="main_flight">Flight Status tracker</string>
     <string name="main_article">New York Times Article Search</string>
 
+    <!-- the strings for the menu -->
     <string name="menu_dic">Dictionary</string>
     <string name="menu_news">News</string>
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
+
+    <!-- the strings for the article page -->
+    <string name="article_test">Articles</string>
 </resources>
