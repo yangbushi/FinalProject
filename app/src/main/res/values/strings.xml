@@ -12,9 +12,12 @@
     <string name="menu_news">News</string>
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
+    <string name="menu_search">Search</string>
 
     <!-- the strings for the article page -->
     <string name="article_test">Articles</string>
+    <string name="article_search_hint">Input a topic here to search</string>
+    <string name="article_search_button">search</string>
 
     <!-- the strings for the flight page -->
     <string name="flight_textBox">Enter code here</string>
