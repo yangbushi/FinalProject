@@ -45,6 +45,7 @@ public class ArticleActivity extends AppCompatActivity {
     private List<Article> savedArticles; // the saved article list from database
 
     private ProgressBar progressBar;
+    // test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
