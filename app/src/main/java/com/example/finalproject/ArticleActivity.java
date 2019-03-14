@@ -125,7 +125,6 @@ public class ArticleActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -145,6 +144,8 @@ public class ArticleActivity extends AppCompatActivity {
             case R.id.menu_dic:
                 break;
             case R.id.menu_flight:
+                Intent flightIntent = new Intent(this, FlightActivity.class);
+                startActivity(flightIntent);
                 break;
             case R.id.menu_news:
                 break;
@@ -289,14 +290,14 @@ public class ArticleActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             Log.i("AsyncTaskExample", "update:" + values[0]);
-        //    messageBox.setText("At step:" + values[0]);
+            //    messageBox.setText("At step:" + values[0]);
         }
 
         @Override
         protected void onPostExecute(String s) {
             //the parameter String s will be "Finished task" from line 27
 
-         //   messageBox.setText("Finished all tasks");
+            //   messageBox.setText("Finished all tasks");
             progressBar.setVisibility(View.INVISIBLE);
         }
     }

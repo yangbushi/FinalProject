@@ -18,4 +18,8 @@
     <string name="article_test">Articles</string>
     <string name="article_search_hint">Input a topic here to search</string>
     <string name="article_search_button">search</string>
+
+    <!-- the strings for the flight page -->
+    <string name="flight_textBox">Enter code here</string>
+    <string name="flight_textButton">Check</string>
 </resources>
