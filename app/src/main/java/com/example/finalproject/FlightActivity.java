@@ -9,7 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 /**
- * Flight status tracker'
+ * 'Flight status tracker'
  * @author Dustin Horricks
  * @version 1.0.0
  */
