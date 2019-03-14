@@ -15,4 +15,8 @@
 
     <!-- the strings for the article page -->
     <string name="article_test">Articles</string>
+
+    <!-- the strings for the flight page -->
+    <string name="flight_textBox">Enter code here</string>
+    <string name="flight_textButton">Check</string>
 </resources>

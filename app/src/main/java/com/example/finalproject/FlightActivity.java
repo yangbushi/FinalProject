@@ -7,44 +7,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 
 /**
- * The main entry of the application
- * @author George Yang
+ * Flight status tracker'
+ * @author Dustin Horricks
  * @version 1.0.0
  */
-public class MainActivity extends AppCompatActivity {
+
+public class FlightActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_flight);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
-        // Jump to 'New York Times Article Search' by clicking the relative button
-        Button articleButton = (Button)findViewById(R.id.article_button);
-        articleButton.setOnClickListener(v->{
-            Intent articleIntent = new Intent(this, ArticleActivity.class);
-            startActivity(articleIntent);
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_bar, menu);
+        MenuInflater mInflater = getMenuInflater();
+        mInflater.inflate(R.menu.menu_bar, menu);
 
         return true;
     }
 
-    /**
-     * Jump to different activity / function based on the menu icon clicked
-     * @param item
-     * @return
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -42,6 +42,8 @@ public class ArticleActivity extends AppCompatActivity {
             case R.id.menu_dic:
                 break;
             case R.id.menu_flight:
+                Intent flightIntent = new Intent(this, FlightActivity.class);
+                startActivity(flightIntent);
                 break;
             case R.id.menu_news:
                 break;
