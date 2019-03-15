@@ -18,4 +18,9 @@
     <string name="article_test">文章</string>
     <string name="article_search_hint">输入你想搜索的话题</string>
     <string name="article_search_button">查找</string>
+
+    <!-- the strings for the flight page -->
+    <string name="flight_textBox">在此处输入代码</string>
+    <string name="flight_textButton">校验</string>
+
 </resources>
