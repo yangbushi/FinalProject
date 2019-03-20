@@ -16,14 +16,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -44,7 +47,17 @@ public class ArticleActivity extends AppCompatActivity {
     private List<Article> searchArticles; // the article list returned by searching
     private List<Article> savedArticles; // the saved article list from database
 
+    private Toolbar toolbar;
     private ProgressBar progressBar;
+    private SearchView sView;
+    private Button searchButton;
+    private ListView articleList;
+
+    MyDatabaseOpenHelper dbOpener;
+    SQLiteDatabase db;
+
+    private ListAdapter adapter;
+
     // test
 
     @Override
@@ -52,25 +65,26 @@ public class ArticleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
+        toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         //get a database:
-        MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
-        SQLiteDatabase db = dbOpener.getWritableDatabase();
+        dbOpener = new MyDatabaseOpenHelper(this);
+        db = dbOpener.getWritableDatabase();
         //loadArticlesFromDB(db);
 
         // set the adapter for the search listView
-        ListAdapter adapter = new MyArrayAdapter<Article>(searchArticles);
-        ListView articleList = (ListView)findViewById(R.id.articleList);
+        searchArticles = new ArrayList<>(20);
+        adapter = new MyArrayAdapter<Article>(searchArticles);
+        articleList = (ListView)findViewById(R.id.articleList);
         articleList.setAdapter(adapter);
 
-        SearchView sView = (SearchView)findViewById(R.id.search_article);
+        sView = (SearchView)findViewById(R.id.search_article);
         sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 DataFetcher networkThread = new DataFetcher();
-                networkThread.execute( "https://www.nytimes.com/search?query=" + sView.getQuery() ); //this starts doInBackground on other thread
+                networkThread.execute( "http://api.nytimes.com/svc/search/v2/articlesearch.json?&api-key=S14OrOeGC2U7vSABHtPnpN6oZD5ysWud&query=" + sView.getQuery() ); //this starts doInBackground on other thread
 
                 //messageBox = (EditText)findViewById(R.id.messageBox);
                 progressBar = (ProgressBar)findViewById(R.id.article_progress_bar);
@@ -83,6 +97,11 @@ public class ArticleActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
+        });
+
+        searchButton = (Button)findViewById(R.id.article_search_button);
+        searchButton.setOnClickListener(v->{
+            sView.setQuery(sView.getQuery(), true);
         });
     }
 
@@ -174,7 +193,7 @@ public class ArticleActivity extends AppCompatActivity {
             else return articles.get(position);
         }
 
-        public long getItemId(int position) { return 0; }
+        public long getItemId(int position) { return position; }
 
         public View getView(int position, View old, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
@@ -209,58 +228,9 @@ public class ArticleActivity extends AppCompatActivity {
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream inStream = urlConnection.getInputStream();
 
-                //create a pull parser:
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(false);
-                XmlPullParser xpp = factory.newPullParser();
-                xpp.setInput( inStream  , "UTF-8");  //inStream comes from line 46
-
-                //now loop over the XML:
-                while(xpp.getEventType() != XmlPullParser.END_DOCUMENT)
-                {
-                    if(xpp.getEventType() == XmlPullParser.START_TAG)
-                    {
-                        String tagName = xpp.getName(); //get the name of the starting tag: <tagName>
-                        if(tagName.equals("dt"))
-                        {
-                            String parameter = xpp.getAttributeValue(null, "message");
-                            Log.e("AsyncTask", "Found parameter message: "+ parameter);
-                            publishProgress(1); //tell android to call onProgressUpdate with 1 as parameter
-                        }
-
-                        else if(tagName.equals("Weather"))
-                        {
-                            String parameter = xpp.getAttributeValue(null, "outlook");
-                            Log.e("AsyncTask", "Found parameter outlook: "+ parameter);
-
-                            parameter = xpp.getAttributeValue(null, "windy");
-                            Log.e("AsyncTask", "Found parameter windy: "+ parameter);
-                            publishProgress(2); //tell android to call onProgressUpdate with 2 as parameter
-                        }
-
-                        else if(tagName.equals("Temperature")) {
-                            xpp.next(); //move to the text between opening and closing tags:
-                            String temp = xpp.getText();
-                            publishProgress(3); //tell android to call onProgressUpdate with 3 as parameter
-                        }
-                    }
-
-                    xpp.next(); //advance to next XML event
-                }
-
-                //End of XML reading
-
-                //Start of JSON reading of UV factor:
-
-                //create the network connection:
-                URL UVurl = new URL("http://api.openweathermap.org/data/2.5/uvi?appid=7e943c97096a9784391a981c4d878b22&lat=45.348945&lon=-75.759389");
-                HttpURLConnection UVConnection = (HttpURLConnection) UVurl.openConnection();
-                inStream = UVConnection.getInputStream();
-
                 //create a JSON object from the response
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, "UTF-8"), 8);
                 StringBuilder sb = new StringBuilder();
-
                 String line = null;
                 while ((line = reader.readLine()) != null)
                 {
@@ -268,15 +238,22 @@ public class ArticleActivity extends AppCompatActivity {
                 }
                 String result = sb.toString();
 
-                //now a JSON table:
+                // get the JSON array of articles:
                 JSONObject jObject = new JSONObject(result);
-                double aDouble = jObject.getDouble("value");
-                Log.i("UV is:", ""+ aDouble);
+                JSONArray jsonArray = jObject.getJSONObject("response").getJSONArray("docs");
 
-                //END of UV rating
+                String title, link;
+                int articleNumber = jsonArray.length();
+                for(int i = 0; i < articleNumber; i++) { // loop the array to get article items
+                    title = ((JSONObject)(jsonArray.get(i))).getJSONObject("headline").getString("main");
+                    link = ((JSONObject)(jsonArray.get(i))).getString("web_url");
+                    Article article = new Article(i, title, link);
+                    searchArticles.add(article);
 
-                Thread.sleep(2000); //pause for 2000 milliseconds to watch the progress bar spin
+                    publishProgress((i+1)/articleNumber*100);
+                }
 
+                Thread.sleep(1000); //pause for 1000 milliseconds to watch the progress bar spin
             }catch (Exception ex)
             {
                 Log.e("Crash!!", ex.getMessage() );
@@ -289,15 +266,16 @@ public class ArticleActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(values[0]);
             Log.i("AsyncTaskExample", "update:" + values[0]);
-            //    messageBox.setText("At step:" + values[0]);
         }
 
         @Override
         protected void onPostExecute(String s) {
-            //the parameter String s will be "Finished task" from line 27
+            // show the list view
+            ((MyArrayAdapter) adapter).notifyDataSetChanged();
 
-            //   messageBox.setText("Finished all tasks");
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
