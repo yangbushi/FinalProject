@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 //go to  news_feed
         Button feedButton = (Button)findViewById(R.id.news_button);
-        articleButton.setOnClickListener(v->{
+        feedButton.setOnClickListener(v->{
             Intent feedIntent = new Intent(this, NewsFeed.class);
             startActivity(feedIntent);
         });
