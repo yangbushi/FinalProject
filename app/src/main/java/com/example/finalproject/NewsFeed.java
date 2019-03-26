@@ -1,7 +1,6 @@
 package com.example.finalproject;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,26 +55,38 @@ public class NewsFeed extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_article:
-                Intent articleIntent = new Intent(this, ArticleActivity.class);
-                startActivity(articleIntent);
-                break;
+        switch(item.getItemId())
+        {
+            //what to do when the menu item is selected:
             case R.id.menu_dic:
-                break;
-            case R.id.menu_flight:
-                Intent flightIntent = new Intent(this, FlightActivity.class);
-                startActivity(flightIntent);
+                //Show the toast immediately:
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
                 break;
             case R.id.menu_news:
-                Intent feedIntent = new Intent(this, NewsFeed.class);
-                startActivity(feedIntent);
+                //Show the toast immediately:
+                //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
+                alertExample();
+                break;
+            case R.id.menu_flight:
+                //Show the toast immediately:
+                //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
+                Snackbar sb = Snackbar.make(tBar, "Go Back?", Snackbar.LENGTH_LONG)
+                        .setAction("GoBack", e ->{
+                            Log.e("Menu Example", "Clicked Undo");
+                            finish();
+                        });
+                sb.show();
+
+                break;
+            case R.id.menu_article:
+                //Show the toast immediately:
+                Toast.makeText(this, "You clicked on the overflow menu", Toast.LENGTH_LONG).show();
+
                 break;
         }
-
         return true;
     }
-
     public void alertExample()
     {
         View middle = getLayoutInflater().inflate(R.layout.news_feed_dialog, null);
