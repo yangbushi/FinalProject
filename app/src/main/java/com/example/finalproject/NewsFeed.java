@@ -26,7 +26,7 @@ public class NewsFeed extends AppCompatActivity {
         tBar = (Toolbar)findViewById(R.id.toolbar);
 
         setSupportActionBar(tBar);
-        message = "This is the initial message";
+        message = "This is the final project";
     }
 
     @Override
