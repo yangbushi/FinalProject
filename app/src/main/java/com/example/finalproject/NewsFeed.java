@@ -16,9 +16,13 @@ import android.support.design.widget.Snackbar;
 
 
 public class NewsFeed extends AppCompatActivity {
-
+/**difine the toolbar */
     private Toolbar tBar;
+
+    /**difine the perameter of Sring*/
     private String message;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
