@@ -156,7 +156,7 @@ public class ArticleActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_article:
+            case R.id.menu_help:
                 Intent articleIntent = new Intent(this, ArticleActivity.class);
                 startActivity(articleIntent);
                 break;

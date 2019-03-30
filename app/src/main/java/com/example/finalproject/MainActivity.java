@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 //go to  news_feed
         Button feedButton = (Button)findViewById(R.id.news_button);
         feedButton.setOnClickListener(v->{
-            Intent feedIntent = new Intent(this, NewsFeed.class);
+            Intent feedIntent = new Intent(this, NewsFeedMain.class);
             startActivity(feedIntent);
         });
     }
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_article:
+            case R.id.menu_help:
                 Intent articleIntent = new Intent(this, ArticleActivity.class);
                 startActivity(articleIntent);
                 break;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
-                Intent feedIntent = new Intent(this, NewsFeed.class);
+                Intent feedIntent = new Intent(this, NewsFeedMain.class);
                 startActivity(feedIntent);
                 break;
         }

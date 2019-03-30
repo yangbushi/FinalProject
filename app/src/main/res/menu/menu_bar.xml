@@ -21,8 +21,8 @@
         android:orderInCategory="300"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/menu_article"
-        android:title="@string/menu_article"
+    <item android:id="@+id/menu_help"
+        android:title="help"
         android:icon="@drawable/article"
         android:orderInCategory="400"
         app:showAsAction="always"/>

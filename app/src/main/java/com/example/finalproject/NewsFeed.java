@@ -1,118 +1,103 @@
 package com.example.finalproject;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.support.design.widget.Snackbar;
 
 
-public class NewsFeed extends AppCompatActivity {
-/**difine the toolbar */
-    private Toolbar tBar;
+import java.util.ArrayList;
 
-    /**difine the perameter of Sring*/
-    private String message;
+public class NewsFeed {
+    private int id;
+    private String title;
+    private ArrayList<String> author;
 
+    private String year;
+    private String price;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_feed);
-        tBar = (Toolbar)findViewById(R.id.toolbar);
+    public NewsFeed(){
+        this.author = new ArrayList<>();
+    }
 
-        setSupportActionBar(tBar);
-        message = "This is the final project";
+    public NewsFeed(String title, ArrayList<String> author) {
+        super();
+
+        this.title = title;
+        this.author = author;
+    }
+
+    public NewsFeed(String title, String a) {
+        super();
+
+        this.title = title;
+        this.author = new ArrayList<>();
+        author.add(a);
+    }
+
+    public NewsFeed(String title, ArrayList<String> author, String year, String price) {
+        super();
+
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.price = price;
+    }
+
+    public NewsFeed(int id, String title, ArrayList<String> author) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.author = author;
+    }
+    //getters & setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ArrayList<String> getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(ArrayList<String> author) {
+        this.author = author;
+    }
+    public void setAuthor(String author) {
+        this.author.add(author);
+    }
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void addAuthor(String a){
+        if(author == null)
+            this.author = new ArrayList<>();
+        this.author.add(a);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_bar, menu);
-
-
-	    /* slide 15 material:
-	    MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView sView = (SearchView)searchItem.getActionView();
-        sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }  });
-
-	    */
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId())
-        {
-            //what to do when the menu item is selected:
-            case R.id.menu_dic:
-                //Show the toast immediately:
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
-                break;
-            case R.id.menu_news:
-                //Show the toast immediately:
-                //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "You clicked on the overflow menu", Toast.LENGTH_LONG).show();
-
-                break;
-            case R.id.menu_flight:
-                //Show the toast immediately:
-                //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
-                Snackbar sb = Snackbar.make(tBar, "Go Back?", Snackbar.LENGTH_LONG)
-                        .setAction("GoBack", e ->{
-                            Log.e("Menu Example", "Clicked Undo");
-                            finish();
-                        });
-                sb.show();
-
-                break;
-            case R.id.menu_help:
-                //Show the toast immediately:
-                alertExample();
-
-                break;
-        }
-        return true;
-    }
-    public void alertExample()
-    {
-        View middle = getLayoutInflater().inflate(R.layout.news_feed_dialog, null);
-
-        EditText et = (EditText)middle.findViewById(R.id.view_edit_text);
-        //btn.setOnClickListener( clk -> {et.setText("You clicked my button!");});
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("The Message")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Accept
-                        message = et.getText().toString();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Cancel
-                    }
-                }).setView(middle);
-
-        builder.create().show();
+    public String toString() {
+        return "Book [id=" + id + ", title=" + title + ", author=" + author
+                + "]";
     }
 }
