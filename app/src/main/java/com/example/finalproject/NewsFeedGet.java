@@ -20,7 +20,7 @@ public class NewsFeedGet {
 
     public static final String FINISH = "finished";
 
-    private static final String strURL = "https://www.w3schools.com/xml/books.xml";
+    private static final String strURL = "http://webhose.io/filterWebContent?token=cf1375e3-9fc1-4002-b876-806a616c1b28&format=json&sort=crawled&q=stock%20market%20language%3Aenglish";
     private static String ns = null;
 
     private static NewsFeed bookFromXML = null;
