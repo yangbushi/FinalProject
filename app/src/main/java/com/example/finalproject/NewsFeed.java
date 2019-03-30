@@ -70,7 +70,8 @@ public class NewsFeed extends AppCompatActivity {
             case R.id.menu_news:
                 //Show the toast immediately:
                 //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
-                alertExample();
+                Toast.makeText(this, "You clicked on the overflow menu", Toast.LENGTH_LONG).show();
+
                 break;
             case R.id.menu_flight:
                 //Show the toast immediately:
@@ -83,9 +84,9 @@ public class NewsFeed extends AppCompatActivity {
                 sb.show();
 
                 break;
-            case R.id.menu_article:
+            case R.id.menu_help:
                 //Show the toast immediately:
-                Toast.makeText(this, "You clicked on the overflow menu", Toast.LENGTH_LONG).show();
+                alertExample();
 
                 break;
         }
