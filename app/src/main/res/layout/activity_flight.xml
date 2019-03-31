@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#c6d1c1">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:title="Flight Tracker" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ProgressBar
             android:id="@+id/flight_progressbar"
@@ -30,7 +32,7 @@
             android:hint="@string/flight_textBox"
             android:inputType="text"
             android:layout_centerHorizontal="true"
-            android:maxLength="25"/>
+            android:maxLength="22"/>
 
         <Button
             android:id="@+id/flight_textButton"
@@ -39,15 +41,20 @@
             android:text="@string/flight_textButton"
             android:layout_toEndOf="@+id/flight_text"/>
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:transcriptMode="alwaysScroll"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/flight_text"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/flight_View">
+
+        </ListView>
+
     </RelativeLayout>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:transcriptMode="alwaysScroll"
-        android:layout_weight="1"
-        android:id="@+id/flight_View">
-
-    </ListView>
 
     </LinearLayout>
