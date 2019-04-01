@@ -1,12 +1,30 @@
 package com.example.finalproject;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * 'Flight status tracker'
@@ -16,6 +34,11 @@ import android.view.MenuItem;
 
 public class FlightActivity extends AppCompatActivity {
 
+    private String arrivalAPI = "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&arrIata=YOW";
+    private String departAPI = "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&depIata=YOW";
+    private ListView fListView;
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +46,9 @@ public class FlightActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+
+        FlightAPI netWorkThread = new FlightAPI();
+        netWorkThread.execute(arrivalAPI);
     }
 
     @Override
@@ -53,3 +79,42 @@ public class FlightActivity extends AppCompatActivity {
         return true;
     }
 }
+
+    class FlightAPI extends AsyncTask<String, Integer, String> {
+
+    String speed, altitude, status;
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String myUrl = strings[0];
+
+            try {
+
+                //this creates the connection to the network
+                URL url = new URL(myUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = connection.getInputStream();
+
+                //create JSON obj from the response:
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+                StringBuilder sb = new StringBuilder();
+
+                String result = sb.toString();
+
+                //now to create a JSON table:
+                JSONObject jsonObject = new JSONObject(result);
+                speed = jsonObject.getString("speed");
+                Log.i("Speed is: ", "" + speed);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return "Finished..";
+        }
+    }
