@@ -4,20 +4,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
 
     <ImageView
         android:id="@+id/flightRowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         app:srcCompat="@drawable/flight"/>
 
-    <!-- Not entirely finished-->
     <TextView
-        android:id="@+id/flightRowText"
+        android:id="@+id/flightRowSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/flightRowIcon"
+        android:text="Text to come"/>
+
+    <TextView
+        android:id="@+id/flightRowAltitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/flightRowIcon"
+        android:layout_below="@id/flightRowSpeed"
+        android:text="Text to come"/>
+
+    <TextView
+        android:id="@+id/flightRowStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/flightRowIcon"
+        android:layout_below="@id/flightRowAltitude"
         android:text="Text to come"/>
 
 </RelativeLayout>

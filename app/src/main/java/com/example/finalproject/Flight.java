@@ -9,21 +9,24 @@ package com.example.finalproject;
 public class Flight {
 
     private int id;
-    private String info;
-    private String flight_number;
+    private String speed;
+    private String altitude;
+    private String status;
 
     public Flight(){
 
-        id = 0;
-        info = null;
-        flight_number = null;
+        id = -1;
+        speed = null;
+        altitude = null;
+        status = null;
     }
 
-    public Flight(int id, String info, String flight_number){
+    public Flight(int id, String speed, String altitude, String status){
 
         this.id = id;
-        this.info = info;
-        this.flight_number = flight_number;
+        this.speed = speed;
+        this.altitude = altitude;
+        this.status = status;
     }
 
     public void setId(int id){
@@ -36,23 +39,33 @@ public class Flight {
         return id;
     }
 
-    public void setInfo(String info){
+    public void setSpeed(String speed){
 
-        this.info = info;
+        this.speed = speed;
     }
 
-    public String getInfo(){
+    public String getSpeed(){
 
-        return info;
+        return speed;
     }
 
-    public void setFlight_number(String flight_number){
+    public void setAltitude(String altitude){
 
-        this.flight_number = flight_number;
+        this.altitude = altitude;
     }
 
-    public String getFlight_number(){
+    public String getAltitude(){
 
-        return flight_number;
+        return altitude;
+    }
+
+    public String getStatus(){
+
+        return status;
+    }
+
+    public void setStatus(String status){
+
+        this.status = status;
     }
 }
