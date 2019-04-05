@@ -16,10 +16,18 @@
         app:srcCompat="@drawable/flight"/>
 
     <TextView
+        android:id="@+id/flightRowDeparture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/flightRowIcon"
+        android:text="Text to come"/>
+
+    <TextView
         android:id="@+id/flightRowSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/flightRowIcon"
+        android:layout_below="@id/flightRowDeparture"
         android:text="Text to come"/>
 
     <TextView

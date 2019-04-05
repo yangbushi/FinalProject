@@ -41,14 +41,14 @@ public class FlightActivity extends AppCompatActivity {
 
     private String arrivalAPI;
     //private String temp = "http://torunski.ca/flights.json";
-    private String departAPI = "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&depIata=YOW";
+    private String departAPI; //= "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&depIata=YOW";
     private ListView fListView;
     private ProgressBar progressBar;
     private FlightListAdapter adapter;
     private Button checkButton;
     private EditText flightText;
     private TextView textView;
-    List<Flight> flights = new ArrayList<>();
+    List<Flight> flights;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,36 +63,42 @@ public class FlightActivity extends AppCompatActivity {
         flightText = (EditText)findViewById(R.id.flight_text);
         textView = (TextView)findViewById(R.id.flight_view);
 
+        flights = new ArrayList<>();
+
         //FlightAPI netWorkThread = new FlightAPI();
 
-        try {
-            arrivalAPI = "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&arrIata=" + flightText.getText().toString();
-        }catch(Exception e){
-
-            Toast.makeText(this, "Wrong Code!", Toast.LENGTH_SHORT).show();
-        }
-
-        adapter = new FlightListAdapter(this, flights);
-        adapter.notifyDataSetChanged();
+//        adapter = new FlightListAdapter(this, flights);
+//        adapter.notifyDataSetChanged();
 
          checkButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
 
+                 try {
+                     departAPI = "http://aviation-edge.com/v2/public/flights?key=e09fd1-a516a8&depIata=" + flightText.getText().toString();
+                 }catch(Exception e){
+
+                     Toast.makeText(getApplicationContext(), "Wrong Code!", Toast.LENGTH_SHORT).show();
+                 }
+
                  if(flightText.getText().toString().matches("")) {
                      Toast.makeText(getApplicationContext(), "Please enter code", Toast.LENGTH_SHORT).show();
                  } else {
                      FlightAPI netWorkThread = new FlightAPI();
-                         netWorkThread.execute(arrivalAPI);
-                     textView.setText("Current Code: " + flightText.getText().toString());
+                         netWorkThread.execute(departAPI);
 
+                         //shows the user/console the current Flight Code
+                     textView.setText("Current Code: " + flightText.getText().toString());
                      Log.e("Flight text info ", "" + flightText.getText().toString());
-                     fListView.setAdapter(adapter);
-                     adapter.notifyDataSetChanged();
+
+                     flights.clear();
                  }
              }
          });
 
+            adapter = new FlightListAdapter(this, flights);
+            fListView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -128,12 +134,12 @@ public class FlightActivity extends AppCompatActivity {
         flights.add(newFlight);
     }
 
-
     public class FlightAPI extends AsyncTask<String, Integer, String> {
 
-        String speed, status;
+        String speed, status, departure, arrival;
         String altitude = "Unknown";
         Flight flight;
+        FlightActivity activity = new FlightActivity();
 
         @Override
         protected String doInBackground(String... strings) {
@@ -159,20 +165,29 @@ public class FlightActivity extends AppCompatActivity {
                 String result = sb.toString();
 
                 //now to create a JSON table:
+                Log.e("Results ", "" + result);
                 JSONArray jsonArray = new JSONArray(result);
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    speed = "Speed: " + jsonObject.optString("speed");
+                    JSONObject tempDep = jsonObject.getJSONObject("departure");
+                    departure = "Departure: " + tempDep.getString("iataCode");
 
-                    altitude = "Altitude: " + jsonObject.optString("altitude");
+                    JSONObject tempSpeed = jsonObject.getJSONObject("speed");
+                    speed = "Speed: " + tempSpeed.getString("horizontal");
+
+                    JSONObject tempAlt = jsonObject.getJSONObject("geography");
+                    altitude = "Altitude: " + tempAlt.getString("altitude");
 
                     status = "Status: " + jsonObject.optString("status");
 
-                    flight = new Flight(i, speed, altitude, status);
+                    flight = new Flight(i, departure, speed, altitude, status);
                     addFlight(flight);
 
+
+
+                    Log.e("Departure is ", "" + departure);
                     Log.e("Speed is ", "" + speed);
                     Log.e("Altitude is ", "" + altitude);
                     Log.e("Status is ", "" + status);

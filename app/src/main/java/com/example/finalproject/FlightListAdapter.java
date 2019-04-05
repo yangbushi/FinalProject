@@ -36,6 +36,9 @@ public class FlightListAdapter extends ArrayAdapter<Flight> {
 
         Flight currentFlight = getItem(position);
 
+        TextView fDeparture = (TextView)listItem.findViewById(R.id.flightRowDeparture);
+        fDeparture.setText(flightList.get(position).getDeparture());
+
         TextView fSpeed = (TextView)listItem.findViewById(R.id.flightRowSpeed);
         fSpeed.setText(flightList.get(position).getSpeed());
 

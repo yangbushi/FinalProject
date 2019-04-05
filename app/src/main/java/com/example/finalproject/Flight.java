@@ -9,9 +9,14 @@ package com.example.finalproject;
 public class Flight {
 
     private int id;
+    private String departure;
+    private String arrival;
     private String speed;
     private String altitude;
     private String status;
+
+    //this is for errors
+    private String error;
 
     public Flight(){
 
@@ -19,11 +24,18 @@ public class Flight {
         speed = null;
         altitude = null;
         status = null;
+        error = null;
     }
 
-    public Flight(int id, String speed, String altitude, String status){
+    public Flight(String departure){
+
+        this.departure = departure;
+    }
+
+    public Flight(int id, String departure, String speed, String altitude, String status){
 
         this.id = id;
+        this.departure = departure;
         this.speed = speed;
         this.altitude = altitude;
         this.status = status;
@@ -67,5 +79,25 @@ public class Flight {
     public void setStatus(String status){
 
         this.status = status;
+    }
+
+    public String getDeparture(){
+
+        return departure;
+    }
+
+    public void setDeparture(String departure){
+
+        this.departure = departure;
+    }
+
+    public String getError(){
+
+        return error;
+    }
+
+    public void setError(String error){
+
+        this.error = error;
     }
 }
