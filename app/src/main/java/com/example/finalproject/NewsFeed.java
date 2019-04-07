@@ -7,44 +7,31 @@ import java.util.ArrayList;
 public class NewsFeed {
     private int id;
     private String title;
-    private ArrayList<String> author;
+    private String url;
 
-    private String year;
-    private String price;
+    private ArrayList<String> Content;
+    private String searchWord;
+  //  private String price;
 
     public NewsFeed(){
-        this.author = new ArrayList<>();
+        this.Content = new ArrayList<>();
     }
 
-    public NewsFeed(String title, ArrayList<String> author) {
+    public NewsFeed(String title, String url) {
         super();
 
         this.title = title;
-        this.author = author;
+        this.url = url;
     }
 
-    public NewsFeed(String title, String a) {
-        super();
 
-        this.title = title;
-        this.author = new ArrayList<>();
-        author.add(a);
-    }
 
-    public NewsFeed(String title, ArrayList<String> author, String year, String price) {
-        super();
-
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.price = price;
-    }
-
-    public NewsFeed(int id, String title, ArrayList<String> author) {
+    public NewsFeed(int id, String title, ArrayList<String> Content, String url) {
         super();
         this.id = id;
         this.title = title;
-        this.author = author;
+        this.Content = Content;
+        this.url = url;
     }
     //getters & setters
     public int getId() {
@@ -63,41 +50,35 @@ public class NewsFeed {
         this.title = title;
     }
 
-    public ArrayList<String> getAuthor() {
-        return author;
+    public String getUrl() {
+        return url;
     }
 
-    public void setAuthor(ArrayList<String> author) {
-        this.author = author;
-    }
-    public void setAuthor(String author) {
-        this.author.add(author);
-    }
-    public String getYear() {
-        return year;
+    public void setURL(String url) {
+        this.url = url;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public  ArrayList<String> getContent() {
+        return Content;
     }
 
-    public String getPrice() {
-        return price;
+    public void setContent(ArrayList<String> Content) {
+        this.Content = Content;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void addContent(String a){
+        this.Content.add(a);
+    }
+    public String searchWord() {
+        return searchWord;
     }
 
-    public void addAuthor(String a){
-        if(author == null)
-            this.author = new ArrayList<>();
-        this.author.add(a);
+    public void setKeyword(String searchWord) {
+        this.searchWord = searchWord;
     }
-
     @Override
     public String toString() {
-        return "Book [id=" + id + ", title=" + title + ", author=" + author
+        return "Book [id=" + id + ", title=" + title + ", url=" + url
                 + "]";
     }
 }

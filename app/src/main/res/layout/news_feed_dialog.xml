@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-    <TextView android:layout_height="wrap_content" android:layout_width="match_parent" android:text="author’s name-Tao Shen.Activity version number:001"/>
-    <EditText android:id="@+id/view_edit_text" android:layout_height="wrap_content" android:layout_width="match_parent" android:hint="Instructions:Just type here"/>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/fragmentLocation">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_title"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_url"
+        android:layout_below="@id/message_title"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_content"
+        android:layout_below="@id/message_title"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Delete"
+        android:id="@+id/deleteButton"/>
+</RelativeLayout>

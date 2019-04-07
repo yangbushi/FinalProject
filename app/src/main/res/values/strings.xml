@@ -13,7 +13,8 @@
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
     <string name="menu_search">Search</string>
-
+    <!-- the strings for the newsfeed page -->
+    <string name="preference_keyWord">SearchContent</string>
     <!-- the strings for the article page -->
     <string name="article_test">Articles</string>
     <string name="article_search_hint">Input a topic here to search</string>

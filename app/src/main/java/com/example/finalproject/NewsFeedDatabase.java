@@ -29,9 +29,7 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
         String CREATE_BOOK_TABLE = "CREATE TABLE NewsFeed ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
-                "author TEXT, "+
-                "year TEXT, "+
-                "price TEXT )";
+                 "content TEXT,"+"url TEXT)";
 
         // create books table
         db.execSQL(CREATE_BOOK_TABLE);
@@ -40,7 +38,7 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older books table if existed
-        db.execSQL("DROP TABLE IF EXISTS books");
+        db.execSQL("DROP TABLE IF EXISTS NewsFeed");
 
         // create fresh books table
         this.onCreate(db);
@@ -52,31 +50,30 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
      */
 
     // Books table name
-    private static final String TABLE_BOOKS = "books";
+    private static final String TABLE_NewsFeedS = "NewsFeed";
 
     // Books Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
-    private static final String KEY_AUTHOR = "author";
-    private static final String KEY_YEAR = "year";
-    private static final String KEY_PRICE = "price";
+    private static final String KEY_content = "content";
+    private static final String KEY_url = "url";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_AUTHOR,KEY_YEAR,KEY_PRICE};
+    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_content,KEY_url};
 
-    public void addBook(NewsFeed NewsFeed){
-        Log.d("addBook", NewsFeed.toString());
+    public void addNewsFeed(NewsFeed NewsFeed){
+        Log.d("addNewsFeed", NewsFeed.toString());
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, NewsFeed.getTitle()); // get title
-        values.put(KEY_AUTHOR, NewsFeed.getAuthor().get(0)); // get author
-        values.put(KEY_YEAR, NewsFeed.getYear()); // get year
-        values.put(KEY_PRICE, NewsFeed.getPrice()); // get price
+        values.put(KEY_content, NewsFeed.getContent().get(0));
+        values.put(KEY_url, NewsFeed.getUrl()); // get author
+
 
         // 3. insert
-        db.insert(TABLE_BOOKS, // table
+        db.insert(TABLE_NewsFeedS, // table
                 null, //nullColumnHack
                 values); // key/value -> keys = column names/ values = column values
 
@@ -91,7 +88,7 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
 
         // 2. build query
         Cursor cursor =
-                db.query(TABLE_BOOKS, // a. table
+                db.query(TABLE_NewsFeedS, // a. table
                         COLUMNS, // b. column names
                         " id = ?", // c. selections
                         new String[] { String.valueOf(id) }, // d. selections args
@@ -104,26 +101,24 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-        // 4. build book object
+        // 4. build NewsFeed object
         NewsFeed NewsFeed = new NewsFeed();
         NewsFeed.setId(Integer.parseInt(cursor.getString(0)));
         NewsFeed.setTitle(cursor.getString(1));
-        NewsFeed.setAuthor(cursor.getString(2));
-        NewsFeed.setYear(cursor.getString(3));
-        NewsFeed.setPrice(cursor.getString(4));
+        NewsFeed.addContent(cursor.getString(2));
+        NewsFeed.setURL(cursor.getString(3));
+        Log.d("getNewsFeed("+id+")", NewsFeed.toString());
 
-        Log.d("getBook("+id+")", NewsFeed.toString());
-
-        // 5. return book
+        // 5. return NewsFeed
         return NewsFeed;
     }
 
-    // Get All Books
-    public List<NewsFeed> getAllBooks() {
+    // Get All NewsFeeds
+    public List<NewsFeed> getAllNewsFeeds() {
         List<NewsFeed> AllNews = new LinkedList<NewsFeed>();
 
         // 1. build the query
-        String query = "SELECT  * FROM " + TABLE_BOOKS;
+        String query = "SELECT  * FROM " + TABLE_NewsFeedS;
 
         // 2. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
@@ -133,41 +128,43 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
         NewsFeed NewsFeed = null;
         if (cursor.moveToFirst()) {
             do {
-         //       NewsFeed = new NewsFeed();
+                NewsFeed = new NewsFeed();
                 NewsFeed.setId(Integer.parseInt(cursor.getString(0)));
                 NewsFeed.setTitle(cursor.getString(1));
-                NewsFeed.setAuthor(cursor.getString(2));
-                NewsFeed.setYear(cursor.getString(3));
-                NewsFeed.setPrice(cursor.getString(4));
+                NewsFeed.addContent(cursor.getString(2));
+                NewsFeed.setURL(cursor.getString(3));
+
+          //      NewsFeed.setPrice(cursor.getString(4));
 
                 // Add book to books
                 AllNews.add(NewsFeed);
             } while (cursor.moveToNext());
         }
 
-        Log.d("getAllBooks()", NewsFeed.toString());
+        //Log.d("getAllNewsFeeds()", NewsFeed.toString());
 
         // return books
         return AllNews;
     }
 
     // Updating single book
-    public int updateBook(NewsFeed NewsFeed) {
+    public int updateNewsFeed(NewsFeed NewsFeed) {
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        values.put("title", NewsFeed.getTitle()); // get title
-        values.put("author", NewsFeed.getAuthor().get(0)); // get author
-        values.put("year", NewsFeed.getYear()); // get year
-        values.put("price", NewsFeed.getPrice()); // get price
+        values.put("KEY_TITLE", NewsFeed.getTitle()); // get title
+        values.put("KEY_content", NewsFeed.getContent().get(0)); // get Content
+        values.put("KEY_url", NewsFeed.getUrl()); // get url
+
+
 
         // 3. updating row
-        int i = db.update(TABLE_BOOKS, //table
+        int i = db.update(TABLE_NewsFeedS, //table
                 values, // column/value
-                KEY_ID+" = ?", // selections
+                KEY_url+" = ?", // selections
                 new String[] { String.valueOf(NewsFeed.getId()) }); //selection args
 
         // 4. close
@@ -177,21 +174,21 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
 
     }
 
-    // Deleting single book
-    public void deleteBook(NewsFeed NewsFeed) {
+    // Deleting single NewsFeed
+    public void deleteNewsFeed(NewsFeed NewsFeed) {
 
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
         // 2. delete
-        db.delete(TABLE_BOOKS,
-                KEY_ID+" = ?",
+        db.delete(TABLE_NewsFeedS,
+                KEY_url+" = ?",
                 new String[] { String.valueOf(NewsFeed.getId()) });
 
         // 3. close
         db.close();
 
-        Log.d("deleteBook", NewsFeed.toString());
+        Log.d("deleteNewsFeed", NewsFeed.toString());
 
     }
 }

@@ -21,9 +21,14 @@
         android:orderInCategory="300"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/menu_help"
-        android:title="help"
+    <item android:id="@+id/menu_article"
+        android:title="Articl"
         android:icon="@drawable/article"
         android:orderInCategory="400"
+        app:showAsAction="always"/>
+    <item android:id="@+id/menu_help"
+        android:title="help"
+        android:icon="@drawable/news"
+        android:orderInCategory="500"
         app:showAsAction="always"/>
 </menu>
