@@ -8,7 +8,7 @@ public class NewsFeedItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_feed_item);
+        setContentView(R.layout.activity_new_feed_detail);
         Bundle dataToPass = getIntent().getExtras(); //get the data that was passed from FragmentExample
 
         //This is copied directly from FragmentExample.java lines 47-54

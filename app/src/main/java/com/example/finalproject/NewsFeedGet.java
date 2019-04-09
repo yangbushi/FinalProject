@@ -15,7 +15,7 @@ public class NewsFeedGet {
  //   public static final String NewsFeedTAG = "NewsFeed";
     public static final String url = "url";
     public static final String TITLE = "title";
-    public static final String content = "content";
+    public static final String content = "text";
     public static final String method = "post";
  //   public static final String PRICE = "price";
 
@@ -60,6 +60,8 @@ public class NewsFeedGet {
 //    }
 
     public static boolean openStream(String keyword){
+
+
         try{
             NewsFeedGet.keyword = keyword;
             String strURL1 = strURL+keyword;
@@ -105,6 +107,7 @@ public class NewsFeedGet {
         NewsFeed NewsFeed = null;
         boolean finished = false;
 
+        int i = 1;
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -116,16 +119,17 @@ public class NewsFeedGet {
                 NewsFeed.setKeyword(keyword);
                 continue;
             }
-            if (name.equals(NewsFeedGet.TITLE)) {
-                parser.next();
-                NewsFeed.setTitle(parser.getText());
-                continue;
-            }
             if (name.equals(NewsFeedGet.url)) {
                 parser.next();
                 NewsFeed.setURL(parser.getText());
                 continue;
             }
+            if (name.equals(NewsFeedGet.TITLE)) {
+                parser.next();
+                NewsFeed.setTitle(parser.getText());
+                continue;
+            }
+
             if (name.equals(NewsFeedGet.content)) {
                 parser.next();
                 NewsFeed.addContent(parser.getText());
@@ -139,7 +143,10 @@ public class NewsFeedGet {
             if(finished) {
                 NewsFeedList.add(NewsFeed);
                 finished = false;
+                i ++;
             }
+
+            //if(i>1)break;
         }
         return NewsFeedList;
     }

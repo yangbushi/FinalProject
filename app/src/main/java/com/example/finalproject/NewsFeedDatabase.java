@@ -26,13 +26,13 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // SQL statement to create book table
-        String CREATE_BOOK_TABLE = "CREATE TABLE NewsFeed ( " +
+        String CREATE_NEWS_TABLE = "CREATE TABLE NewsFeed ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
                  "content TEXT,"+"url TEXT)";
 
         // create books table
-        db.execSQL(CREATE_BOOK_TABLE);
+        db.execSQL(CREATE_NEWS_TABLE);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
         // 2. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, NewsFeed.getTitle()); // get title
-        values.put(KEY_content, NewsFeed.getContent().get(0));
+        //values.put(KEY_content, NewsFeed.getContent().get(0));
         values.put(KEY_url, NewsFeed.getUrl()); // get author
 
 

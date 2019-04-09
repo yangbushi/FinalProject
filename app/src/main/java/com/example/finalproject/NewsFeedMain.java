@@ -125,7 +125,7 @@ public class NewsFeedMain  extends AppCompatActivity {
 //        bookData.deleteBook(list.get(0));
 
         // get all books
-       // NewsFeedData.getAllNewsFeeds();
+        //NewsFeedData.getAllNewsFeeds();
 
         NewsFeedList.addAll(list);
 
@@ -146,7 +146,7 @@ public class NewsFeedMain  extends AppCompatActivity {
                 Bundle dataToPass = new Bundle();
                 dataToPass.putString(ITEM_TITLE, NewsFeedList.get(position).getTitle());
                 dataToPass.putString(ITEM_URL, NewsFeedList.get(position).getUrl());
-                dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
+               // dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
               //  dataToPass.putString(ITEM_PRICE, bookList.get(position).getPrice());
                 dataToPass.putInt(ITEM_POSITION, position);
                 dataToPass.putInt(ITEM_ID, NewsFeedList.get(position).getId());
@@ -164,7 +164,7 @@ public class NewsFeedMain  extends AppCompatActivity {
                 }
                 else //isPhone
                 {
-                    Intent nextActivity = new Intent(NewsFeedMain.this, NewFeedDetail.class);
+                    Intent nextActivity = new Intent(NewsFeedMain.this, NewsFeedItem.class);
                     nextActivity.putExtras(dataToPass); //send data to next activity
                     startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
                 }
@@ -344,37 +344,16 @@ public class NewsFeedMain  extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
+          // NewsFeedGet NewsFeedGet = new NewsFeedGet();
             NewsFeedGet.setNewsFeedFromXML(NewsFeedFromXML);
-            NewsFeedGet.openStream(typeField.getText().toString());
+            //NewsFeedGet.openStream(typeField.getText().toString());
+            //NewsFeedGet.openStream(NewsFeedFromXML.getUrl());
+
+
             try {
-       /*         NewsFeed NewsFeed = NewsFeedGet.readNewsFeedTag();
-                publishProgress(25);
-                Thread.sleep(2000/PROGRESSSPEED);
-                NewsFeed = NewsFeedGet.readNewsFeedTag();
-                NewsFeedData.addNewsFeed(NewsFeed);
-                publishProgress(50);
-                Thread.sleep(2000/PROGRESSSPEED);
-                NewsFeed = NewsFeedGet.readNewsFeedTag();
-                NewsFeedData.addNewsFeed(NewsFeed);
-                publishProgress(75);
-                Thread.sleep(2000/PROGRESSSPEED);
-                NewsFeed = NewsFeedGet.readNewsFeedTag();
-                NewsFeedData.addNewsFeed(NewsFeed);
-                publishProgress(100);
-                Thread.sleep(2000/PROGRESSSPEED);
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return NewsFeedGet.FINISH;
-            **/
+
                 if(NewsFeedGet.openStream(typeField.getText().toString())){
-           //         ArrayList<NewsFeed> NewsFeedList = new ArrayList<>();
+                    NewsFeedList = new ArrayList<>();
 
                     publishProgress(25);
                     Thread.sleep(2000 / PROGRESSSPEED);
@@ -404,8 +383,9 @@ public class NewsFeedMain  extends AppCompatActivity {
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.INVISIBLE);
             // get all books
-            NewsFeedList.clear();
-            NewsFeedList.addAll(NewsFeedData.getAllNewsFeeds());
+            //NewsFeedList.clear();
+            //NewsFeedList.addAll(NewsFeedData.getAllNewsFeeds());
+            NewsFeedListViewAdapter.setNewsFeedList(NewsFeedList);
             NewsFeedListViewAdapter.notifyDataSetChanged();
         }
 

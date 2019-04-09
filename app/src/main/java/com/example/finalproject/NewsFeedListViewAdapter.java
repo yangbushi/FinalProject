@@ -49,18 +49,19 @@ public class NewsFeedListViewAdapter extends ArrayAdapter<NewsFeed> {
         LayoutInflater inflater = NewsFeedExamplethis.getLayoutInflater();
         View result = null;
 
-
+        NewsFeed current = (NewsFeed)getItem(position);
         result = inflater.inflate(R.layout.activity_news_feed_item, null);
 
         TextView NewsFeedID = (TextView) result.findViewById(R.id.NewsFeedID);
-        NewsFeedID.setText(Integer.toString(getItem(position).getId()));
+     //   NewsFeedID.setText(Integer.toString(getItem(position).getId()));
+        NewsFeedID.setText(Integer.toString(current.getId()));
 
         TextView NewsFeedTitle = (TextView) result.findViewById(R.id.NewsFeedTitle);
-        NewsFeedTitle.setText(getItem(position).getTitle());
+        NewsFeedTitle.setText(current.getTitle());
 
         TextView NewsFeedUrl = (TextView) result.findViewById(R.id.NewsFeedUrl);
-        NewsFeedUrl.setText(getItem(position).getUrl());
-
+       // NewsFeedUrl.setText(getItem(position).getUrl());
+        NewsFeedUrl.setText(current.getUrl());
         return result;
     }
 
