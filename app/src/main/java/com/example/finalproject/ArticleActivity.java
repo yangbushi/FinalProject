@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -58,7 +59,10 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ListAdapter adapter;
 
-    // test
+    public static final String ARTICLE_ID = "ID";
+    public static final String ARTICLE_TITLE = "TITLE";
+    public static final String ARTICLE_LINK = "LINK";
+    public static final int ARTICLE_TEXT_ACTIVITY = 345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,35 @@ public class ArticleActivity extends AppCompatActivity {
         articleList = (ListView)findViewById(R.id.articleList);
         articleList.setAdapter(adapter);
 
+        // turn to article detail fragment
+        boolean isTablet = findViewById(R.id.articleTextFrag) != null;
+        articleList.setOnItemClickListener((list, item, position, id) -> { // refer to prof's week8
+            Bundle dataToPass = new Bundle();
+            Article article = searchArticles.get(position);
+            dataToPass.putString(ARTICLE_LINK, article.getLink() );
+            dataToPass.putString(ARTICLE_TITLE, article.getTitle());
+            dataToPass.putLong(ARTICLE_ID, id);
+
+            if(isTablet) // show fragment directly
+            {
+                ArticleTextFragment fragment = new ArticleTextFragment(); //add a DetailFragment
+                fragment.setArguments( dataToPass ); //pass it a bundle for information
+                fragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.articleTextFrag, fragment) //Add the fragment in FrameLayout
+                        .addToBackStack("AnyName") //make the back button undo the transaction
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone, start empty activity which then calls fragment
+            {
+                Intent nextActivity = new Intent(ArticleActivity.this, ArticleTextActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivityForResult(nextActivity, ARTICLE_TEXT_ACTIVITY); //make the transition
+            }
+        });
+
+        // search articles by typing key words
         sView = (SearchView)findViewById(R.id.search_article);
         sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -278,5 +311,42 @@ public class ArticleActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ARTICLE_TEXT_ACTIVITY) // return from article detail page
+        {
+            if(resultCode == RESULT_OK) //if you hit the save button instead of back button
+            {
+                long id = data.getLongExtra(ARTICLE_ID, 0);
+                String title = data.getStringExtra(ARTICLE_TITLE);
+                String link = data.getStringExtra(ARTICLE_LINK);
+
+                saveArticle((int)id, title, link);
+            }
+        }
+    }
+
+    /**
+     * save article to saved list
+     * @param id
+     */
+    public void saveArticle(int id, String title, String link)
+    {
+        Log.i("save this article:" , " id="+id);
+
+        //add to the database and get the new ID
+        ContentValues newRowValues = new ContentValues();
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_TITLE, title);
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_LINK, link);
+
+        //insert in the database:
+        long newId = db.insert(MyDatabaseOpenHelper.TABLE_ARTICLE, null, newRowValues);
+
+        // add the article to adapter
+        Article article = new Article((int)newId, title, link);
+        savedArticles.add(article);
+
     }
 }
