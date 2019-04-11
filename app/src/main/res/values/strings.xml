@@ -13,15 +13,26 @@
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
     <string name="menu_search">Search</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_saved">Saved list</string>
 
     <!-- the strings for the article page -->
     <string name="article_test">Articles</string>
     <string name="article_search_hint">Input a topic here to search</string>
     <string name="article_search_button">search</string>
     <string name="article_save">save this article</string>
+    <string name="article_toast">Article saved!</string>
+    <string name="article_author">Author: </string>
+    <string name="article_version">Version: </string>
+    <string name="article_instruction">Instruction: </string>
+    <string name="article_delete">delete</string>
+    <string name="article_delete_remind">Delete this article?</string>
 
     <!-- the strings for the flight page -->
     <string name="flight_textBox">Enter code here</string>
     <string name="flight_textButton">Check</string>
+
+    <!-- the strings for the general use -->
+    <string name="confirm">Yes</string>
 
 </resources>
