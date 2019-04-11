@@ -13,15 +13,26 @@
     <string name="menu_flight">航班</string>
     <string name="menu_article">文章</string>
     <string name="menu_search">查找</string>
+    <string name="menu_help">帮助</string>
+    <string name="menu_saved">保存的列表</string>
 
     <!-- the strings for the article page -->
     <string name="article_test">文章</string>
     <string name="article_search_hint">输入你想搜索的话题</string>
     <string name="article_search_button">查找</string>
     <string name="article_save">保存文章</string>
+    <string name="article_toast">文章保存成功！</string>
+    <string name="article_author">作者： </string>
+    <string name="article_version">版本：</string>
+    <string name="article_instruction">使用说明：</string>
+    <string name="article_delete">删除</string>
+    <string name="article_delete_remind">确定要删除这篇文章吗？</string>
 
     <!-- the strings for the flight page -->
     <string name="flight_textBox">在此处输入代码</string>
     <string name="flight_textButton">校验</string>
+
+    <!-- the strings for the general use -->
+    <string name="confirm">确定</string>
 
 </resources>
