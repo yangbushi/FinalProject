@@ -26,9 +26,14 @@
         android:icon="@drawable/article"
         android:orderInCategory="400"
         app:showAsAction="always"/>
-    <item android:id="@+id/menu_help"
-        android:title="help"
-        android:icon="@drawable/news"
+
+    <item android:id="@+id/menu_about"
+        android:title="@string/menu_about"
         android:orderInCategory="500"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/menu_help"
+        android:title="@string/menu_help"
+        android:orderInCategory="600"
+        app:showAsAction="never"/>
 </menu>

@@ -1,13 +1,10 @@
 package com.example.finalproject;
-import android.content.Context;
-import android.graphics.Bitmap;
+
 import android.util.Xml;
 import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,22 +40,6 @@ public class NewsFeedGet {
         return NewsFeedGet.NewsFeedFromXML;
     }
 
-
-//    public static String doInBackground(String... strings) {
-//
-//        try (InputStream in = HTTPUtils.downloadUrl(strURL)) {
-//
-//            bookFromXML = parse();
-//            Log.i("",bookFromXML.toString());
-//
-//        } catch (IOException | XmlPullParserException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException | JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return "Finished";
-//    }
-
     public static boolean openStream(String keyword){
 
 
@@ -87,17 +68,6 @@ public class NewsFeedGet {
     }
 
 
-//    public static Book parse() throws XmlPullParserException, IOException, InterruptedException, JSONException {
-//        try {
-//            parser = Xml.newPullParser();
-//            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-//            parser.setInput(in, null);
-//            return readBook();
-//        } finally {
-//            in.close();
-//        }
-//    }
-
     public static String getTagValue(String tag){
         return null;
     }
@@ -107,7 +77,7 @@ public class NewsFeedGet {
         NewsFeed NewsFeed = null;
         boolean finished = false;
 
-        int i = 1;
+
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
@@ -135,58 +105,16 @@ public class NewsFeedGet {
                 NewsFeed.addContent(parser.getText());
                 finished = true;
             }
-  /*          if (name.equals(NewsFeedGet.PRICE)) {
-                parser.next();
-                NewsFeed.setPrice(parser.getText());
-                finished = true;
-            }**/
+
             if(finished) {
                 NewsFeedList.add(NewsFeed);
                 finished = false;
-                i ++;
+
             }
 
-            //if(i>1)break;
-        }
+            }
         return NewsFeedList;
     }
 
-  /*  public static NewsFeed readNewsFeedAttr()throws XmlPullParserException, IOException, InterruptedException, JSONException {
-        ArrayList<NewsFeed> NewsFeeds = new ArrayList<>();
-        NewsFeed NewsFeed = null;
-
-        while (parser.next() != XmlPullParser.END_DOCUMENT) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            String name = parser.getName();
-            // Starts by looking for the first book tag
-            if (name.equals(NewsFeedGet.method)) {
-                NewsFeed = new NewsFeed();
-                NewsFeed.setKeyword(keyword);
-                continue;
-            }
-            if (name.equals(NewsFeedGet.NewsFeedTAG)) {
-                NewsFeed = new NewsFeed();
-                NewsFeed.setURL(parser.getAttributeValue(ns, NewsFeedGet.url));
-                NewsFeed.setTitle(parser.getAttributeValue(ns, NewsFeedGet.TITLE));
-            }
-        }
-        return NewsFeed;
-    }
-**/
-  /*  private static boolean fileExistance(String fname){
-        File file = NewsFeedExamplethis.getBaseContext().getFileStreamPath(fname);
-        return file.exists();
-    }
-
-
-    private static void saveBMP(String iconName, Bitmap image) throws IOException {
-        FileOutputStream outputStream = NewsFeedExamplethis.openFileOutput( iconName + ".png", Context.MODE_PRIVATE);
-        image.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
-        outputStream.flush();
-        outputStream.close();
-    }
-**/
-}
+  }
 

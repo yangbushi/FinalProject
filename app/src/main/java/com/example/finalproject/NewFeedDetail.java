@@ -35,16 +35,10 @@ public class NewFeedDetail extends Fragment {
         messageTitle.setText("Title : " + dataFromActivity.getString(NewsFeedMain.ITEM_TITLE));
 
         TextView messageUrl = (TextView)result.findViewById(R.id.message_url);
-        messageUrl.setText("Author : " + dataFromActivity.getStringArrayList(NewsFeedMain.ITEM_URL));
-
-     //   TextView messageYear = (TextView)result.findViewById(R.id.message_year);
-     //   messageYear.setText("Year : " + dataFromActivity.getString(NewsFeedMain.ITEM_YEAR));
+        messageUrl.setText("Url : " + dataFromActivity.getStringArrayList(NewsFeedMain.ITEM_URL));
 
         TextView messageContent = (TextView)result.findViewById(R.id.message_content);
-        messageContent.setText("Price : " + dataFromActivity.getString(NewsFeedMain.ITEM_Content));
-
-//        TextView idView = (TextView)result.findViewById(R.id.idText);
-//        idView.setText("ID=" + id);
+        messageContent.setText("Content : " + dataFromActivity.getStringArrayList(NewsFeedMain.ITEM_Content));
 
         // get the delete button, and add a click listener:
         Button deleteButton = (Button)result.findViewById(R.id.deleteButton);

@@ -9,12 +9,12 @@ public class NewsFeed {
     private String title;
     private String url;
 
-    private ArrayList<String> Content;
+    private ArrayList<String> content;
     private String searchWord;
   //  private String price;
 
     public NewsFeed(){
-        this.Content = new ArrayList<>();
+        this.content = new ArrayList<>();
     }
 
     public NewsFeed(String title, String url) {
@@ -26,11 +26,11 @@ public class NewsFeed {
 
 
 
-    public NewsFeed(int id, String title, ArrayList<String> Content, String url) {
+    public NewsFeed(int id, String title, ArrayList<String> content, String url) {
         super();
         this.id = id;
         this.title = title;
-        this.Content = Content;
+        this.content = content;
         this.url = url;
     }
     //getters & setters
@@ -59,15 +59,15 @@ public class NewsFeed {
     }
 
     public  ArrayList<String> getContent() {
-        return Content;
+        return content;
     }
 
-    public void setContent(ArrayList<String> Content) {
-        this.Content = Content;
+    public void setContent(ArrayList<String> content) {
+        this.content = content;
     }
 
     public void addContent(String a){
-        this.Content.add(a);
+        this.content.add(a);
     }
     public String searchWord() {
         return searchWord;
@@ -78,7 +78,7 @@ public class NewsFeed {
     }
     @Override
     public String toString() {
-        return "Book [id=" + id + ", title=" + title + ", url=" + url
+        return "NewsFeed [id=" + id + ", title=" + title + ", url=" + url
                 + "]";
     }
 }

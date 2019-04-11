@@ -14,8 +14,8 @@ import static com.example.finalproject.R.id.NewsFeedList;
 
 public class NewsFeedListViewAdapter extends ArrayAdapter<NewsFeed> {
 
-    private ArrayList<NewsFeed> NewsFeedList = new ArrayList<>();
-    private NewsFeedMain NewsFeedExamplethis = null;
+    private ArrayList<NewsFeed> newsFeedList = new ArrayList<>();
+    private NewsFeedMain newsFeedExamplethis = null;
 
     public NewsFeedListViewAdapter(Context ctx) {
 
@@ -23,16 +23,16 @@ public class NewsFeedListViewAdapter extends ArrayAdapter<NewsFeed> {
     }
 
     public void setNewsFeedList(ArrayList<NewsFeed> NewsFeedList){
-        this.NewsFeedList = NewsFeedList;
+        this.newsFeedList = NewsFeedList;
     }
 
     public void setNewsFeedExample(NewsFeedMain b){
-        this.NewsFeedExamplethis = b;
+        this.newsFeedExamplethis = b;
     }
 
     public int getCount() {
 
-        return NewsFeedList.size();
+        return newsFeedList.size();
     }
 
     public long getItemId(int position) {
@@ -42,26 +42,26 @@ public class NewsFeedListViewAdapter extends ArrayAdapter<NewsFeed> {
 
     public NewsFeed getItem(int position) {
 
-        return NewsFeedList.get(position);
+        return newsFeedList.get(position);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = NewsFeedExamplethis.getLayoutInflater();
+        LayoutInflater inflater = newsFeedExamplethis.getLayoutInflater();
         View result = null;
 
         NewsFeed current = (NewsFeed)getItem(position);
         result = inflater.inflate(R.layout.activity_news_feed_item, null);
 
-        TextView NewsFeedID = (TextView) result.findViewById(R.id.NewsFeedID);
-     //   NewsFeedID.setText(Integer.toString(getItem(position).getId()));
-        NewsFeedID.setText(Integer.toString(current.getId()));
+        //TextView newsFeedID = (TextView) result.findViewById(R.id.NewsFeedID);
+       // NewsFeedID.setText(Integer.toString(getItem(position).getId()));
+        //newsFeedID.setText(Integer.toString(current.getId()));
 
-        TextView NewsFeedTitle = (TextView) result.findViewById(R.id.NewsFeedTitle);
-        NewsFeedTitle.setText(current.getTitle());
+        TextView newsFeedTitle = (TextView) result.findViewById(R.id.NewsFeedTitle);
+        newsFeedTitle.setText(current.getTitle());
 
-        TextView NewsFeedUrl = (TextView) result.findViewById(R.id.NewsFeedUrl);
+        TextView newsFeedUrl = (TextView) result.findViewById(R.id.NewsFeedUrl);
        // NewsFeedUrl.setText(getItem(position).getUrl());
-        NewsFeedUrl.setText(current.getUrl());
+        newsFeedUrl.setText(current.getUrl());
         return result;
     }
 

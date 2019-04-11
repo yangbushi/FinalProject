@@ -12,7 +12,10 @@
     <string name="menu_news">News</string>
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
+    <string name="menu_about">About</string>
+    <string name="menu_help">Help</string>
     <string name="menu_search">Search</string>
+    <string name="delete">delet</string>
     <!-- the strings for the newsfeed page -->
     <string name="preference_keyWord">SearchContent</string>
     <!-- the strings for the article page -->
