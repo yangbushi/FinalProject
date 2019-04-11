@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:orientation="vertical"
     tools:context=".ArticleActivity">
 
@@ -12,11 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- number of saved articles -->
+    <TextView
+        android:id="@+id/article_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="25dp"
+        android:textSize="25dp"
+        android:textColor="@color/colorPrimaryDark" />
+
     <!-- list of the saved articles -->
     <ListView
         android:id="@+id/articleList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="500dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="false" />
 

@@ -79,6 +79,7 @@ public class ArticleActivity extends AppCompatActivity {
     public static final String ARTICLE_LINK = "LINK";
     public static final String ARTICLE_ICON = "ICON";
     public static final String ARTICLE_TEXT = "TEXT";
+    public static final String ARTICLE_LIST_TYPE = "TYPE";
     public static final int ARTICLE_TEXT_ACTIVITY = 345;
 
     @Override
@@ -109,6 +110,7 @@ public class ArticleActivity extends AppCompatActivity {
             dataToPass.putString(ARTICLE_TITLE, article.getTitle());
             dataToPass.putString(ARTICLE_ICON, article.getIconName());
             dataToPass.putString(ARTICLE_TEXT, article.getText());
+            dataToPass.putString(ARTICLE_LIST_TYPE, "search");
             dataToPass.putLong(ARTICLE_ID, id);
 
             if(isTablet) // show fragment directly
@@ -217,14 +219,15 @@ public class ArticleActivity extends AppCompatActivity {
                 TextView version = (TextView)middle.findViewById(R.id.article_version);
                 TextView instruction = (TextView)middle.findViewById(R.id.article_instruction);
 
-                author.setText("George Yang");
-                version.setText("1.0.0");
-                instruction.setText("1. input key words to search related articles from New York Times \n"
+                author.setText(getString(R.string.article_author) + "\tGeorge Yang");
+                version.setText(getString(R.string.article_version) + "\t1.0.0");
+                instruction.setText(getString(R.string.article_instruction)
+                        + "\n1. input key words to search related articles from New York Times \n"
                         + "2. save articles from the search result list \n"
                         + "3. modify the saved list");
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("")
-                        .setPositiveButton("Positive", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
@@ -448,10 +451,6 @@ public class ArticleActivity extends AppCompatActivity {
 
         //insert in the database:
         long newId = db.insert(MyDatabaseOpenHelper.TABLE_ARTICLE, null, newRowValues);
-
-        // add the article to adapter
-        Article article = new Article((int)newId, title, link, icon, text);
-        savedArticles.add(article);
 
         toastMessage = getString(R.string.article_toast);
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();

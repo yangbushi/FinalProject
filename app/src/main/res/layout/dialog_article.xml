@@ -9,19 +9,21 @@
         android:id="@+id/article_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="@string/article_author"/>
 
     <TextView
         android:id="@+id/article_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="@string/article_version"/>
 
     <TextView
         android:id="@+id/article_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="@string/article_instruction"/>
-
 
 </LinearLayout>

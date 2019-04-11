@@ -34,5 +34,6 @@
 
     <!-- the strings for the general use -->
     <string name="confirm">Yes</string>
+    <string name="ok">OK</string>
 
 </resources>

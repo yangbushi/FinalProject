@@ -1,7 +1,7 @@
 package com.example.finalproject;
 
 /**
- * The structure of searched out article list
+ * The structure of searched out / saved article list
  * @author George Yang
  * @version 1.0.0
  */

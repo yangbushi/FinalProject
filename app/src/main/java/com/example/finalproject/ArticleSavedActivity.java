@@ -47,14 +47,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The main entry of 'New York Times Article Search'
+ * The main entry of 'New York Times Article saved list'
  * @author George Yang
  * @version 1.0.0
  * @
  */
 public class ArticleSavedActivity extends AppCompatActivity {
 
-    private List<Article> searchArticles; // the article list returned by searching
     private List<Article> savedArticles; // the saved article list from database
 
     private Toolbar toolbar;
@@ -62,19 +61,19 @@ public class ArticleSavedActivity extends AppCompatActivity {
     private SearchView sView;
     private Button deleteButton;
     private ListView articleList;
+    private TextView articleNumber;
 
     MyDatabaseOpenHelper dbOpener;
     SQLiteDatabase db;
 
     private ListAdapter adapter;
 
-    private String toastMessage = getString(R.string.article_toast);
-
     public static final String ARTICLE_ID = "ID";
     public static final String ARTICLE_TITLE = "TITLE";
     public static final String ARTICLE_LINK = "LINK";
     public static final String ARTICLE_ICON = "ICON";
     public static final String ARTICLE_TEXT = "TEXT";
+    public static final String ARTICLE_LIST_TYPE = "TYPE";
     public static final int ARTICLE_TEXT_ACTIVITY = 345;
 
     @Override
@@ -88,23 +87,28 @@ public class ArticleSavedActivity extends AppCompatActivity {
         //get a database:
         dbOpener = new MyDatabaseOpenHelper(this);
         db = dbOpener.getWritableDatabase();
+        savedArticles = new ArrayList<>(20);
         loadArticlesFromDB(db);
 
-        // set the adapter for the search listView
-        savedArticles = new ArrayList<>(20);
+        // set the adapter for the saved listView
         adapter = new MyArrayAdapter<Article>(savedArticles);
         articleList = (ListView)findViewById(R.id.articleList);
         articleList.setAdapter(adapter);
+
+        // show total number of saved articles
+        articleNumber = (TextView)findViewById(R.id.article_number);
+        articleNumber.setText(adapter.getCount() + " article(s) saved");
 
         // turn to article detail fragment
         boolean isTablet = findViewById(R.id.articleTextFrag) != null;
         articleList.setOnItemClickListener((list, item, position, id) -> { // refer to prof's week8
             Bundle dataToPass = new Bundle();
-            Article article = searchArticles.get(position);
+            Article article = savedArticles.get(position);
             dataToPass.putString(ARTICLE_LINK, article.getLink() );
             dataToPass.putString(ARTICLE_TITLE, article.getTitle());
             dataToPass.putString(ARTICLE_ICON, article.getIconName());
             dataToPass.putString(ARTICLE_TEXT, article.getText());
+            dataToPass.putString(ARTICLE_LIST_TYPE, "save");
             dataToPass.putLong(ARTICLE_ID, id);
 
             if(isTablet) // show fragment directly
@@ -136,7 +140,8 @@ public class ArticleSavedActivity extends AppCompatActivity {
     private void loadArticlesFromDB(SQLiteDatabase db) {
 
         //query all the results from the database:
-        String [] columns = {MyDatabaseOpenHelper.COL_ARTICLE_ID, MyDatabaseOpenHelper.COL_ARTICLE_TITLE, MyDatabaseOpenHelper.COL_ARTICLE_LINK};
+        String [] columns = {MyDatabaseOpenHelper.COL_ARTICLE_ID, MyDatabaseOpenHelper.COL_ARTICLE_TITLE,
+                MyDatabaseOpenHelper.COL_ARTICLE_LINK, MyDatabaseOpenHelper.COL_ARTICLE_ICON, MyDatabaseOpenHelper.COL_ARTICLE_TEXT};
         Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_ARTICLE, columns, null, null, null, null, null, null);
 
         //find the column indices:
@@ -242,7 +247,7 @@ public class ArticleSavedActivity extends AppCompatActivity {
             else return articles.get(position);
         }
 
-        public long getItemId(int position) { return position; }
+        public long getItemId(int position) { return ((Article)getItem(position)).getId(); }
 
         public View getView(int position, View old, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
@@ -257,7 +262,7 @@ public class ArticleSavedActivity extends AppCompatActivity {
             articleTitle.setText(((Article)getItem(position)).getTitle());
 
             // delete an article from the list
-            deleteButton = (Button)findViewById(R.id.article_delete);
+            deleteButton = (Button)root.findViewById(R.id.article_delete);
             deleteButton.setOnClickListener(v->{
                 Snackbar sb = Snackbar.make((Toolbar)findViewById(R.id.main_toolbar), getString(R.string.article_delete_remind), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.confirm), e -> deleteMessageId((int)(getItemId(position))));
@@ -275,14 +280,15 @@ public class ArticleSavedActivity extends AppCompatActivity {
             db.delete(MyDatabaseOpenHelper.TABLE_ARTICLE, MyDatabaseOpenHelper.COL_ARTICLE_ID + "= ?", new String[] {Long.toString(id)});
 
             // delete the article from adapter
-            for(E article: articles) {
-                if(((Article)article).getId() == id) {
-                    articles.remove(article);
+            for(Article article: savedArticles) {
+                if(article.getId() == id) {
+                    savedArticles.remove(article);
                     break;
                 }
             }
 
-          //  adapter.notifyDataSetChanged();
+            articleNumber.setText(adapter.getCount() + " article(s) saved");
+            ((BaseAdapter)adapter).notifyDataSetChanged();
         }
     }
 
