@@ -146,7 +146,7 @@ public class NewsFeedMain  extends AppCompatActivity {
                 Bundle dataToPass = new Bundle();
                 dataToPass.putString(ITEM_TITLE, NewsFeedList.get(position).getTitle());
                 dataToPass.putString(ITEM_URL, NewsFeedList.get(position).getUrl());
-               // dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
+               dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
               //  dataToPass.putString(ITEM_PRICE, bookList.get(position).getPrice());
                 dataToPass.putInt(ITEM_POSITION, position);
                 dataToPass.putInt(ITEM_ID, NewsFeedList.get(position).getId());
@@ -174,7 +174,8 @@ public class NewsFeedMain  extends AppCompatActivity {
         ////
         typeField = (EditText)findViewById(R.id.typeField);
         NewsFeedSharedPref = getSharedPreferences("FileName", Context.MODE_PRIVATE);
-        String savedString = NewsFeedSharedPref.getString("ReserveName", "Default value");
+        String resevedWord = NewsFeedSharedPref.getString("reserved", "Default value");
+        typeField.setText(resevedWord);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);  //show the progress bar
         NewsFeedGet.setNewsFeedExample(this);
@@ -191,8 +192,8 @@ public class NewsFeedMain  extends AppCompatActivity {
         SharedPreferences.Editor editor = NewsFeedSharedPref.edit();
 
         //save what was typed under the name "ReserveName"
-        String whatWasTyped = typeField.getText().toString();
-        editor.putString("ReserveName", whatWasTyped);
+        String TypedWord = typeField.getText().toString();
+        editor.putString("reserved", TypedWord);
 
         //write it to disk:
         editor.commit();
@@ -261,21 +262,23 @@ public class NewsFeedMain  extends AppCompatActivity {
                 Intent feedIntent = new Intent(this, NewsFeedMain.class);
                 startActivity(feedIntent);
                 break;
-
-            //what to do when the menu item is selected:
-            case R.id.menu_help:
-
+            case R.id.menu_about:
                 //Show the toast immediately:
-                Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "This is my final project!", Toast.LENGTH_LONG).show();
 
                 //Show the toast immediately:
                 //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
-                Snackbar sb = Snackbar.make(tBar, "Go Back?", Snackbar.LENGTH_LONG)
+                Snackbar snackbar = Snackbar.make(tBar, "Go Back?", Snackbar.LENGTH_LONG)
                         .setAction("GoBack", e ->{
                             Log.e("Menu Example", "Clicked GoBack");
-                            finish();
+                                       finish();
                         });
-                sb.show();
+                snackbar.show();
+                break;
+            //what to do when the menu item is selected:
+            case R.id.menu_help:
+
+
                 //Show the toast immediately:
                 HelpExample();
 
@@ -284,7 +287,7 @@ public class NewsFeedMain  extends AppCompatActivity {
         return true;
     }
 
-    public void alertExample()
+ /*   public void alertExample()
     {
         View middle = getLayoutInflater().inflate(R.layout.view_extra_stuff, null);
 
@@ -306,7 +309,7 @@ public class NewsFeedMain  extends AppCompatActivity {
 
         builder.create().show();
     }
-
+**/
     public void HelpExample()
     {
         View middle = getLayoutInflater().inflate(R.layout.view_extra_stuff, null);
@@ -344,11 +347,8 @@ public class NewsFeedMain  extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-          // NewsFeedGet NewsFeedGet = new NewsFeedGet();
-            NewsFeedGet.setNewsFeedFromXML(NewsFeedFromXML);
-            //NewsFeedGet.openStream(typeField.getText().toString());
-            //NewsFeedGet.openStream(NewsFeedFromXML.getUrl());
 
+            NewsFeedGet.setNewsFeedFromXML(NewsFeedFromXML);
 
             try {
 
