@@ -3,6 +3,11 @@ package com.example.finalproject;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * The temporary activity to render the detail article fragment
+ * @author George Yang
+ * @version 1.0.0
+ */
 public class ArticleTextActivity extends AppCompatActivity {
 
     @Override

@@ -34,5 +34,6 @@
 
     <!-- the strings for the general use -->
     <string name="confirm">确定</string>
+    <string name="ok">知道了</string>
 
 </resources>

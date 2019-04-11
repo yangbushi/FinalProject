@@ -23,7 +23,9 @@ import java.io.FileNotFoundException;
 
 
 /**
- * the fragment rendered after click an article title from the search list.
+ * @author George Yang
+ * @version 1.0.0
+ * the fragment rendered after click an article title from the search / saved list.
  */
 public class ArticleTextFragment extends Fragment {
 
@@ -89,8 +91,8 @@ public class ArticleTextFragment extends Fragment {
         textView.setText(text);
 
         // get the delete button, and add a click listener:
-        FragmentActivity fragmentActivity = getActivity();
-        if(fragmentActivity instanceof ArticleActivity || fragmentActivity instanceof ArticleTextActivity) {
+        String type = dataFromActivity.getString(ArticleActivity.ARTICLE_LIST_TYPE);
+        if(type.equals("search")) {
             Button saveButton = (Button)result.findViewById(R.id.articleSaveButton);
             saveButton.setVisibility(View.VISIBLE);
 
@@ -112,6 +114,8 @@ public class ArticleTextFragment extends Fragment {
                     backToArticleList.putExtra(ArticleActivity.ARTICLE_ID, id);
                     backToArticleList.putExtra(ArticleActivity.ARTICLE_TITLE, title);
                     backToArticleList.putExtra(ArticleActivity.ARTICLE_LINK, link);
+                    backToArticleList.putExtra(ArticleActivity.ARTICLE_ICON, icon);
+                    backToArticleList.putExtra(ArticleActivity.ARTICLE_TEXT, text);
 
                     parent.setResult(Activity.RESULT_OK, backToArticleList); //send data back to ArticleActivity in onActivityResult()
                     parent.finish(); //go back

@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "MyDatabaseFile";
-    public static final int VERSION_NUM = 2;
+    public static final int VERSION_NUM = 3;
 
     // Saved articles table
     public static final String TABLE_ARTICLE = "articles";
@@ -33,6 +33,7 @@ public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
         //Create saved articles table
         db.execSQL("CREATE TABLE " + TABLE_ARTICLE + "( "
                 + COL_ARTICLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COL_ARTICLE_TITLE + " TEXT, "
                 + COL_ARTICLE_LINK + " TEXT, "
                 + COL_ARTICLE_ICON + " TEXT,"
                 + COL_ARTICLE_TEXT + " TEXT )");
