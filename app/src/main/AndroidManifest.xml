@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArticleTextActivity"></activity>
+        <activity android:name=".DictActivity"></activity>
+        <activity android:name=".ArticleTextActivity" />
         <activity android:name=".ArticleActivity" />
         <activity android:name=".ArticleSavedActivity" />
         <activity android:name=".FlightActivity" />
