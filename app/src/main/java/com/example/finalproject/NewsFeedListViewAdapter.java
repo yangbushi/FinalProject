@@ -10,7 +10,9 @@ import android.content.Context;
 
         import java.util.ArrayList;
 
-import static com.example.finalproject.R.id.NewsFeedList;
+/**define adapter
+ *
+ */
 
 public class NewsFeedListViewAdapter extends ArrayAdapter<NewsFeed> {
 

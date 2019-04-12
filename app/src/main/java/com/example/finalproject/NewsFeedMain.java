@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/* main function of my interface
+
+ */
 public class NewsFeedMain  extends AppCompatActivity {
     ////
     private Toolbar tBar;
@@ -212,9 +215,10 @@ public class NewsFeedMain  extends AppCompatActivity {
 
     public void deleteListMessage(int position)
     {
+      //  NewsFeedData.addNewsFeed(NewsFeedList.get(position));
         NewsFeedData.deleteNewsFeed(NewsFeedList.get(position));
         // get all books
-        NewsFeedData.getAllNewsFeeds();
+        //NewsFeedData.getAllNewsFeeds();
         NewsFeedList.clear();
         NewsFeedList.addAll(NewsFeedData.getAllNewsFeeds());
         NewsFeedListViewAdapter.notifyDataSetChanged();

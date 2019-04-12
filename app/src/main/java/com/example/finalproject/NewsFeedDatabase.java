@@ -11,7 +11,9 @@ import android.database.Cursor;
 
 import java.util.LinkedList;
         import java.util.List;
+/* realize database design
 
+ */
 public class NewsFeedDatabase extends SQLiteOpenHelper {
 
     // Database Version
@@ -25,34 +27,34 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // SQL statement to create book table
+        // SQL statement to create NewsFeed table
         String CREATE_NEWS_TABLE = "CREATE TABLE NewsFeed ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
                  "content TEXT,"+"url TEXT)";
 
-        // create books table
+        // create NewsFeedS table
         db.execSQL(CREATE_NEWS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older books table if existed
+        // Drop older NewsFeedS table if existed
         db.execSQL("DROP TABLE IF EXISTS NewsFeed");
 
-        // create fresh books table
+        // create fresh NewsFeedS table
         this.onCreate(db);
     }
     //---------------------------------------------------------------------
 
     /**
-     * CRUD operations (create "add", read "get", update, delete) book + get all books + delete all books
+     * CRUD operations (create "add", read "get", update, delete) NewsFeed + get all NewsFeedS + delete all NewsFeedS
      */
 
-    // Books table name
+    // define table name
     private static final String TABLE_NewsFeedS = "NewsFeed";
 
-    // Books Table Columns names
+    // NewsFeedS Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_content = "content";
@@ -124,7 +126,7 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        // 3. go over each row, build book and add it to list
+        // 3. go over each row, build NewsFeed and add it to list
         NewsFeed NewsFeed = null;
         if (cursor.moveToFirst()) {
             do {
@@ -136,18 +138,18 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
 
           //      NewsFeed.setPrice(cursor.getString(4));
 
-                // Add book to books
+                // Add NewsFeed to NewsFeedS
                 AllNews.add(NewsFeed);
             } while (cursor.moveToNext());
         }
 
         //Log.d("getAllNewsFeeds()", NewsFeed.toString());
 
-        // return books
+        // return NewsFeedS
         return AllNews;
     }
 
-    // Updating single book
+    // Updating single NewsFeed
     public int updateNewsFeed(NewsFeed NewsFeed) {
 
         // 1. get reference to writable DB
