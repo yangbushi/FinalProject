@@ -3,18 +3,19 @@ package com.example.finalproject;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * appear the fragment and pass data to the the fragment
+ */
 public class NewsFeedItem extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_feed_detail);
-        Bundle dataToPass = getIntent().getExtras(); //get the data that was passed from FragmentExample
-
-        //This is copied directly from FragmentExample.java lines 47-54
+        Bundle dataToPass = getIntent().getExtras();
         NewFeedDetail dFragment = new NewFeedDetail();
-        dFragment.setArguments( dataToPass ); //pass data to the the fragment
-        dFragment.setTablet(false); //tell the Fragment that it's on a phone.
+        dFragment.setArguments( dataToPass );
+        dFragment.setTablet(false);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragmentLocation, dFragment)

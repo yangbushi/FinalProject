@@ -15,6 +15,7 @@
     <string name="menu_about">关于</string>
     <string name="menu_help">帮助</string>
     <string name="menu_search">查找</string>
+    <string name="save">保存</string>
     <string name="delete">删除</string>
     <!-- the strings for the article page -->
     <string name="article_test">文章</string>

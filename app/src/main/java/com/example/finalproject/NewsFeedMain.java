@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
@@ -24,116 +23,104 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/* main function of my interface
-
+/**
+*main function of my interface
  */
 public class NewsFeedMain  extends AppCompatActivity {
-    ////
+    /**
+     * define a toolbar
+     */
     private Toolbar tBar;
+    /**
+     * define a message of String
+     */
     private String message = "Init message";
- //   private EditText keyWord;
-  //  String strURL;
-    ///
+    /**
+     * define a newsfeed's arraylist
+     */
     private ArrayList<NewsFeed> NewsFeedList = new ArrayList<>();
+    /**
+     * define a ACTIVITY_NAME
+     */
     protected static final String ACTIVITY_NAME = "NewsFeedMain";
-
-    // SQLite database
+    /**
+     * define a instance of the NewsFeedDatabase
+     */
     protected static NewsFeedDatabase NewsFeedData;
+    /**
+     * define a instance of the SQLiteDatabase
+     */
     protected SQLiteDatabase NewsFeedDb;
-
-    Cursor results;
+    /**
+     * define a adapter of the NewsFeed
+     */
     NewsFeedListViewAdapter NewsFeedListViewAdapter;
 
-    ////
+    /**
+     * define a SharedPreferences of the NewsFeed
+     */
     SharedPreferences NewsFeedSharedPref;
+    /**
+     * define a EditText
+     */
     EditText typeField;
-    ////
-
-    ////
+    /**
+     * define a PROGRESSSPEED
+     */
     public static final int PROGRESSSPEED = 10;
+    /**
+     * define a ProgressBar
+     */
     private ProgressBar progressBar;
+    /**
+     * define and initiaize a instance of NewsFeed
+     */
     public NewsFeed NewsFeedFromXML= new NewsFeed();
-    ////
-
-    ////
+    /**
+     * define a String named title
+     */
     public static final String ITEM_TITLE = "TITLE";
+    /**
+     * define a String named url
+     */
     public static final String ITEM_URL = "URL";
+    /**
+     * define a String named content
+     */
     public static final String ITEM_Content = "CONTENT";
-  //  public static final String ITEM_PRICE = "PRICE";
+    /**
+     * define a String named position
+     */
     public static final String ITEM_POSITION = "POSITION";
+    /**
+     * define a String named id
+     */
     public static final String ITEM_ID = "ID";
+    /**
+     * define a int variable  named EMPTY_ACTIVITY
+     */
     public static final int EMPTY_ACTIVITY = 345;
-    ////
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
-        ////
         tBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
-        ////
         NewsFeedData = new NewsFeedDatabase(this);
         NewsFeedDb = NewsFeedData.getWritableDatabase();
-
         setSupportActionBar(tBar);
         message = "This is the final project";
-      Button SearchButton = findViewById(R.id.SearchButton);
-        SearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String INputword = typeField.getText().toString();
-                NewsFeedQuery Query = new NewsFeedQuery();
-                NewsFeedFromXML.setKeyword(INputword);
-
-                //articleEntity.setLocation(word);
-                Query.execute();
-            }
-        });
-
-      /*  Intent prePage = getIntent();
-        String keyWordTyped = prePage.getStringExtra(getString(R.string.preference_keyWord));
-        EditText editText = findViewById(R.id.typeField);
-        editText.setText(keyWordTyped);
-
-
-        String strUrlHead = "http://webhose.io/filterWebContent?";
-        String token = "cf1375e3-9fc1-4002-b876-806a616c1b28";
-        String strUrlTail ="&format=xml&sort=crawled&q=";
-        //http://webhose.io/filterWebContent?token=20da7245-5cb3-47f5-a3ed-e08148b81f6d&format=xml&sort=crawled&q=apple;
-        strURL = strUrlHead + "token=" + token + strUrlTail + keyWordTyped;
-       **/
-   //     SearchButton.setOnClickListener(new View.OnClickListener() {
-   //         final int REQUEST_IMAGE_CAPTURE = 1;
-        /**
-         * CRUD Operations
-         * */
-        // add Books
-//        bookData.addBook(new Book("Android Application Development Cookbook", "Wei Meng Lee"));
-//        bookData.addBook(new Book("Android Programming: The Big Nerd Ranch Guide", "Bill Phillips and Brian Hardy"));
-//        bookData.addBook(new Book("Learn Android App Development", "Wallace Jackson"));
-
-        // get all books
-        //////////////////////////////////
-       List<NewsFeed> list = NewsFeedData.getAllNewsFeeds();
-
-        // delete one book
-//        bookData.deleteBook(list.get(0));
-
-        // get all books
-        //NewsFeedData.getAllNewsFeeds();
-
+       //get the list of the before
+        List<NewsFeed> list = NewsFeedData.getAllNewsFeeds();
         NewsFeedList.addAll(list);
-
-        boolean isTablet = findViewById(R.id.fragmentLocation) != null; //check if the FrameLayout is loaded
-        ///
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null;
         ListView NewsFeedListView = (ListView) findViewById(R.id.NewsFeedList);
         NewsFeedListViewAdapter = new NewsFeedListViewAdapter(this);
         NewsFeedListViewAdapter.setNewsFeedList(NewsFeedList);
@@ -143,55 +130,65 @@ public class NewsFeedMain  extends AppCompatActivity {
         NewsFeedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = view.getContext();
 
-                String NewsFeed = NewsFeedList.get(position).toString();
                 Bundle dataToPass = new Bundle();
                 dataToPass.putString(ITEM_TITLE, NewsFeedList.get(position).getTitle());
                 dataToPass.putString(ITEM_URL, NewsFeedList.get(position).getUrl());
-               dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
-              //  dataToPass.putString(ITEM_PRICE, bookList.get(position).getPrice());
+                dataToPass.putStringArrayList(ITEM_Content, NewsFeedList.get(position).getContent());
                 dataToPass.putInt(ITEM_POSITION, position);
                 dataToPass.putInt(ITEM_ID, NewsFeedList.get(position).getId());
-
+                //appear the different effect according the different devices
                 if(isTablet)
                 {
-                    NewFeedDetail dFragment = new NewFeedDetail(); //add a BookDetailFrag
-                    dFragment.setArguments( dataToPass ); //pass it a bundle for information
-                    dFragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                    NewFeedDetail dFragment = new NewFeedDetail();
+                    dFragment.setArguments( dataToPass );
+                    dFragment.setTablet(true);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
-                            //.addToBackStack("AnyName") //make the back button undo the transaction
-                            .commit(); //actually load the fragment.
+                            .add(R.id.fragmentLocation, dFragment)
+                            .commit();
                 }
-                else //isPhone
+                else
                 {
                     Intent nextActivity = new Intent(NewsFeedMain.this, NewsFeedItem.class);
-                    nextActivity.putExtras(dataToPass); //send data to next activity
-                    startActivityForResult(nextActivity, EMPTY_ACTIVITY); //make the transition
+                    nextActivity.putExtras(dataToPass);
+                    startActivityForResult(nextActivity, EMPTY_ACTIVITY);
                 }
             }
         });
 
-        ////
+        //reserve the history of search
         typeField = (EditText)findViewById(R.id.typeField);
         NewsFeedSharedPref = getSharedPreferences("FileName", Context.MODE_PRIVATE);
         String resevedWord = NewsFeedSharedPref.getString("reserved", "Default value");
         typeField.setText(resevedWord);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);  //show the progress bar
+        progressBar.setVisibility(View.VISIBLE);
         NewsFeedGet.setNewsFeedExample(this);
-
-        //NewsFeedQuery NewsFeedQuery = new NewsFeedQuery();
-        //NewsFeedQuery.execute();        ////
+        //delete the reserved content before
+        Button favorite = (Button)findViewById(R.id.favorite);
+        favorite.setOnClickListener(v->{
+            Intent favoriteIntent = new Intent(this, view_favorite.class);
+            startActivity(favoriteIntent);
+        });
+        //search news from internet
+        Button SearchButton = findViewById(R.id.SearchButton);
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String INputword = typeField.getText().toString();
+                NewsFeedQuery Query = new NewsFeedQuery();
+                NewsFeedFromXML.setKeyword(INputword);
+                Query.execute();
+            }
+        });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        //get an editor object
+        //get an editor object of SharedPreferences
         SharedPreferences.Editor editor = NewsFeedSharedPref.edit();
 
         //save what was typed under the name "ReserveName"
@@ -205,46 +202,29 @@ public class NewsFeedMain  extends AppCompatActivity {
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
         if(requestCode == EMPTY_ACTIVITY)
         {
-            if(resultCode == RESULT_OK) //if you hit the delete button instead of back button
+            if(resultCode == RESULT_OK) //if you hit the save button instead of back button
             {
                 int position = data.getIntExtra(ITEM_POSITION, 0);
-                deleteListMessage(position);
+                saveListMessage(position);
             }
         }
     }
 
-    public void deleteListMessage(int position)
+    public void saveListMessage(int position)//save the results to database
     {
-      //  NewsFeedData.addNewsFeed(NewsFeedList.get(position));
-        NewsFeedData.deleteNewsFeed(NewsFeedList.get(position));
-        // get all books
-        //NewsFeedData.getAllNewsFeeds();
-        NewsFeedList.clear();
-        NewsFeedList.addAll(NewsFeedData.getAllNewsFeeds());
-        NewsFeedListViewAdapter.notifyDataSetChanged();
+        NewsFeedData.addNewsFeed(NewsFeedList.get(position));
+
     }
 
     @Override
+    /**
+     * Inflate the menu
+      */
+
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bar, menu);
-
-
-	    /* slide 15 material:
-	    MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView sView = (SearchView)searchItem.getActionView();
-        sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }  });
-
-	    */
-
         return true;
     }
 
@@ -267,11 +247,9 @@ public class NewsFeedMain  extends AppCompatActivity {
                 startActivity(feedIntent);
                 break;
             case R.id.menu_about:
-                //Show the toast immediately:
+                //Show the toast
                 Toast.makeText(this, "This is my final project!", Toast.LENGTH_LONG).show();
-
-                //Show the toast immediately:
-                //Toast.makeText(this, "Welcome to Menu Example", Toast.LENGTH_LONG).show();
+                //show the snackbar
                 Snackbar snackbar = Snackbar.make(tBar, "Go Back?", Snackbar.LENGTH_LONG)
                         .setAction("GoBack", e ->{
                             Log.e("Menu Example", "Clicked GoBack");
@@ -279,58 +257,26 @@ public class NewsFeedMain  extends AppCompatActivity {
                         });
                 snackbar.show();
                 break;
-            //what to do when the menu item is selected:
             case R.id.menu_help:
-
-
-                //Show the toast immediately:
                 HelpExample();
-
                 break;
         }
         return true;
     }
 
- /*   public void alertExample()
-    {
-        View middle = getLayoutInflater().inflate(R.layout.view_extra_stuff, null);
-
-        EditText et = (EditText)middle.findViewById(R.id.view_edit_text);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("The Message")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Accept
-                        //message = et.getText().toString();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Cancel
-                    }
-                }).setView(middle);
-
-        builder.create().show();
-    }
-**/
     public void HelpExample()
     {
         View middle = getLayoutInflater().inflate(R.layout.view_extra_stuff, null);
-
-        EditText et = (EditText)middle.findViewById(R.id.view_edit_text);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Author: Tao Shen\nVersion: 1.0")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Accept
-                        //message = et.getText().toString();
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // What to do on Cancel
+
                     }
                 }).setView(middle);
 
@@ -340,11 +286,10 @@ public class NewsFeedMain  extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        // database
+        // close the database
         NewsFeedData.close();
         Log.i(ACTIVITY_NAME,"In onDestroy()");
     }
-
 
 
     private class NewsFeedQuery extends AsyncTask<String, Integer, String> {
@@ -386,9 +331,6 @@ public class NewsFeedMain  extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.INVISIBLE);
-            // get all books
-            //NewsFeedList.clear();
-            //NewsFeedList.addAll(NewsFeedData.getAllNewsFeeds());
             NewsFeedListViewAdapter.setNewsFeedList(NewsFeedList);
             NewsFeedListViewAdapter.notifyDataSetChanged();
         }

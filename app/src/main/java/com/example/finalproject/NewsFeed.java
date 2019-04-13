@@ -1,17 +1,29 @@
 package com.example.finalproject;
-
-
-
 import java.util.ArrayList;
 
 public class NewsFeed {
-    private int id;
-    private String title;
-    private String url;
 
+    /**
+     * define a int variable:id
+     */
+    private int id;
+    /**
+     * define a String variable:title
+     */
+    private String title;
+    /**
+     * define a String variable:url
+     */
+    private String url;
+    /**
+     * define a ArrayListof:url
+     */
     private ArrayList<String> content;
+    /**
+     * define a String variable:searchWord
+     */
     private String searchWord;
-  //  private String price;
+
 
     public NewsFeed(){
         this.content = new ArrayList<>();
@@ -25,15 +37,7 @@ public class NewsFeed {
     }
 
 
-
-    public NewsFeed(int id, String title, ArrayList<String> content, String url) {
-        super();
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.url = url;
-    }
-    //getters & setters
+    //define all getters or setters
     public int getId() {
         return id;
     }
@@ -78,7 +82,7 @@ public class NewsFeed {
     }
     @Override
     public String toString() {
-        return "NewsFeed [id=" + id + ", title=" + title + ", url=" + url
+        return "NewsFeed [title=" + title + ", url=" + url
                 + "]";
     }
 }

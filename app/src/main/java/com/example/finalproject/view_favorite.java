@@ -10,22 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class NewFeedDetail extends Fragment {
-
-    /**
-     * define the output content of the fragment
-     */
-    /**define a boolean parameter to judge if the device is a tablet
-     *
-     */
+public class view_favorite extends Fragment {
     private boolean isTablet;
-    /**
-     * define a bundle
-     */
     private Bundle dataFromActivity;
-    /**
-     * define a position
-     */
     private int position;
 
     public void setTablet(boolean tablet) { isTablet = tablet; }
@@ -39,36 +26,45 @@ public class NewFeedDetail extends Fragment {
         position = dataFromActivity.getInt(NewsFeedMain.ITEM_POSITION );
 
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.news_feed_dialog, container, false);
+        View result =  inflater.inflate(R.layout.activity_view_favorite, container, false);
 
         //show the message
         TextView messageTitle = (TextView)result.findViewById(R.id.message_title);
         messageTitle.setText("Title : " + dataFromActivity.getString(NewsFeedMain.ITEM_TITLE));
 
-        TextView messageContent = (TextView)result.findViewById(R.id.message_content);
-        messageContent.setText("Content : " + dataFromActivity.get(NewsFeedMain.ITEM_Content));
+        TextView messageUrl = (TextView)result.findViewById(R.id.message_url);
+        messageUrl.setText("Url : " + dataFromActivity.getStringArrayList(NewsFeedMain.ITEM_URL));
 
-        // define a save button and add a click listener:
+        TextView messageContent = (TextView)result.findViewById(R.id.message_content);
+        messageContent.setText("Content : " + dataFromActivity.getStringArrayList(NewsFeedMain.ITEM_Content));
+
+        // get the delete button, and add a click listener:
         Button saveButton = (Button)result.findViewById(R.id.saveButton);
         saveButton.setOnClickListener( clk -> {
-            // for a tablet
-            if(isTablet) {
+
+            if(isTablet) { //both the list and details are on the screen:
                 NewsFeedMain parent = (NewsFeedMain)getActivity();
-                parent.saveListMessage(position);
+                parent.saveListMessage(position); //this deletes the item and updates the list
+
+
+                //now remove the fragment since you deleted it from the database:
+                // this is the object to be removed, so remove(this):
                 parent.getSupportFragmentManager().beginTransaction().remove(this).commit();
             }
             //for Phone:
-            else
+            else //You are only looking at the details, you need to go back to the previous list page
             {
                 NewsFeedItem parent = (NewsFeedItem) getActivity();
                 Intent backToFragmentExample = new Intent();
+
                 backToFragmentExample.putExtra(NewsFeedMain.ITEM_POSITION,
                         dataFromActivity.getInt(NewsFeedMain.ITEM_POSITION ));
+
                 parent.setResult(Activity.RESULT_OK, backToFragmentExample); //send data back to FragmentExample in onActivityResult()
-                parent.finish();
+                parent.finish(); //go back
             }
         });
         return result;
-    }
 
+    }
 }

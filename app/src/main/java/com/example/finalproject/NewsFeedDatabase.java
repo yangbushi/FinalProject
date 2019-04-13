@@ -1,60 +1,59 @@
 package com.example.finalproject;
 
-
-
 import android.content.Context;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteOpenHelper;
-        import android.util.Log;
-        import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.content.ContentValues;
 import android.database.Cursor;
-
 import java.util.LinkedList;
-        import java.util.List;
-/* realize database design
+import java.util.List;
 
- */
+     /**
+     *realize database design
+     */
 public class NewsFeedDatabase extends SQLiteOpenHelper {
-
-    // Database Version
+    /**
+     * define Database Version
+     */
     private static final int DATABASE_VERSION = 2;
-    // Database Name
+    /**
+     * define Database Name
+     */
     private static final String DATABASE_NAME = "NewsFeedDB";
 
-    public NewsFeedDatabase(Context context) {
+         public NewsFeedDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // SQL statement to create NewsFeed table
+        // create th NewsFeed table
         String CREATE_NEWS_TABLE = "CREATE TABLE NewsFeed ( " +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "title TEXT, "+
                  "content TEXT,"+"url TEXT)";
-
-        // create NewsFeedS table
         db.execSQL(CREATE_NEWS_TABLE);
     }
 
     @Override
+    /**
+     *  Drop older NewsFeedS table and fresh
+     */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older NewsFeedS table if existed
+        // Drop older NewsFeedS table
         db.execSQL("DROP TABLE IF EXISTS NewsFeed");
-
-        // create fresh NewsFeedS table
         this.onCreate(db);
     }
-    //---------------------------------------------------------------------
 
     /**
-     * CRUD operations (create "add", read "get", update, delete) NewsFeed + get all NewsFeedS + delete all NewsFeedS
+     * define table name
+     */
+    private static final String TABLE_NewsFeedS = "NewsFeed";
+    /**
+     * define Columns-names of the NewsFeedS Table
      */
 
-    // define table name
-    private static final String TABLE_NewsFeedS = "NewsFeed";
-
-    // NewsFeedS Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_content = "content";
@@ -64,31 +63,25 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
 
     public void addNewsFeed(NewsFeed NewsFeed){
         Log.d("addNewsFeed", NewsFeed.toString());
-        // 1. get reference to writable DB
+        // get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // 2. create ContentValues to add key "column"/value
+        //create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, NewsFeed.getTitle()); // get title
-        //values.put(KEY_content, NewsFeed.getContent().get(0));
-        values.put(KEY_url, NewsFeed.getUrl()); // get author
-
-
-        // 3. insert
-        db.insert(TABLE_NewsFeedS, // table
-                null, //nullColumnHack
-                values); // key/value -> keys = column names/ values = column values
-
-        // 4. close
+        values.put(KEY_TITLE, NewsFeed.getTitle());
+        values.put(KEY_url, NewsFeed.getUrl());
+        db.insert(TABLE_NewsFeedS,
+                null,
+                values);
         db.close();
     }
 
     public NewsFeed getNewsFeed(int id){
 
-        // 1. get reference to readable DB
+        //get reference to database
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // 2. build query
+        // query
         Cursor cursor =
                 db.query(TABLE_NewsFeedS, // a. table
                         COLUMNS, // b. column names
@@ -99,34 +92,32 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
                         null, // g. order by
                         null); // h. limit
 
-        // 3. if we got results get the first one
+        //get the first record
         if (cursor != null)
             cursor.moveToFirst();
 
-        // 4. build NewsFeed object
         NewsFeed NewsFeed = new NewsFeed();
         NewsFeed.setId(Integer.parseInt(cursor.getString(0)));
         NewsFeed.setTitle(cursor.getString(1));
         NewsFeed.addContent(cursor.getString(2));
         NewsFeed.setURL(cursor.getString(3));
         Log.d("getNewsFeed("+id+")", NewsFeed.toString());
-
-        // 5. return NewsFeed
         return NewsFeed;
     }
 
     // Get All NewsFeeds
     public List<NewsFeed> getAllNewsFeeds() {
         List<NewsFeed> AllNews = new LinkedList<NewsFeed>();
-
-        // 1. build the query
+/**
+ * ger the query
+ */
         String query = "SELECT  * FROM " + TABLE_NewsFeedS;
 
-        // 2. get reference to writable DB
+        //get reference to DB
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        // 3. go over each row, build NewsFeed and add it to list
+        //go over each row, build NewsFeed and add it to list
         NewsFeed NewsFeed = null;
         if (cursor.moveToFirst()) {
             do {
@@ -136,42 +127,32 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
                 NewsFeed.addContent(cursor.getString(2));
                 NewsFeed.setURL(cursor.getString(3));
 
-          //      NewsFeed.setPrice(cursor.getString(4));
-
                 // Add NewsFeed to NewsFeedS
                 AllNews.add(NewsFeed);
             } while (cursor.moveToNext());
         }
 
-        //Log.d("getAllNewsFeeds()", NewsFeed.toString());
-
-        // return NewsFeedS
         return AllNews;
     }
 
     // Updating single NewsFeed
     public int updateNewsFeed(NewsFeed NewsFeed) {
 
-        // 1. get reference to writable DB
+        // get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // 2. create ContentValues to add key "column"/value
+        //create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put("KEY_TITLE", NewsFeed.getTitle()); // get title
         values.put("KEY_content", NewsFeed.getContent().get(0)); // get Content
         values.put("KEY_url", NewsFeed.getUrl()); // get url
 
-
-
-        // 3. updating row
-        int i = db.update(TABLE_NewsFeedS, //table
+        //  updating row
+        int i = db.update(TABLE_NewsFeedS,
                 values, // column/value
-                KEY_url+" = ?", // selections
-                new String[] { String.valueOf(NewsFeed.getId()) }); //selection args
-
-        // 4. close
+                KEY_url+" = ?",
+                new String[] { String.valueOf(NewsFeed.getId()) });
         db.close();
-
         return i;
 
     }
@@ -179,17 +160,14 @@ public class NewsFeedDatabase extends SQLiteOpenHelper {
     // Deleting single NewsFeed
     public void deleteNewsFeed(NewsFeed NewsFeed) {
 
-        // 1. get reference to writable DB
+        //get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // 2. delete
+        //delete
         db.delete(TABLE_NewsFeedS,
                 KEY_url+" = ?",
                 new String[] { String.valueOf(NewsFeed.getId()) });
-
-        // 3. close
         db.close();
-
         Log.d("deleteNewsFeed", NewsFeed.toString());
 
     }

@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".NewsFeedItem"></activity>
+        <activity android:name=".view_favorite"></activity>
+        <activity android:name=".NewsFeedItem" />
         <activity android:name=".NewsFeedMain" />
         <activity android:name=".ArticleActivity" />
         <activity android:name=".FlightActivity" />
