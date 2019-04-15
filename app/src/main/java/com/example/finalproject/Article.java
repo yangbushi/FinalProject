@@ -1,7 +1,7 @@
 package com.example.finalproject;
 
 /**
- * The structure of searched out article list
+ * The structure of searched out / saved article list
  * @author George Yang
  * @version 1.0.0
  */
@@ -9,16 +9,20 @@ public class Article {
     private int id;
     private String title;
     private String link;
+    private String iconName;
+    private String text;
 
     public Article() {
-        this(0, "", "");
+        this(0, "", "", "", "");
     }
 
-    public Article(int id, String title, String link)
+    public Article(int id, String title, String link, String iconName, String text)
     {
         this.id = id;
         this.title = title;
         this.link = link;
+        this.iconName = iconName;
+        this.text = text;
     }
 
     public int getId() {
@@ -43,5 +47,21 @@ public class Article {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
