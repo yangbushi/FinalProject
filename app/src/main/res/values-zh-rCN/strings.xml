@@ -31,6 +31,7 @@
     <!-- the strings for the flight page -->
     <string name="flight_textBox">在此处输入代码</string>
     <string name="flight_textButton">校验</string>
+    <string name="frag_listTitle">保存的航班</string>
 
     <!-- the strings for the general use -->
     <string name="confirm">确定</string>
