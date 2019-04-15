@@ -27,15 +27,16 @@ public class Flight {
         error = null;
     }
 
-    public Flight(String departure){
+    public Flight(String departure, String arrival, String speed, String altitude, String status){
 
         this.departure = departure;
     }
 
-    public Flight(int id, String departure, String speed, String altitude, String status){
+    public Flight(int id, String departure, String arrival, String speed, String altitude, String status){
 
         this.id = id;
         this.departure = departure;
+        this.arrival = arrival;
         this.speed = speed;
         this.altitude = altitude;
         this.status = status;
@@ -91,13 +92,13 @@ public class Flight {
         this.departure = departure;
     }
 
-    public String getError(){
+    public void setArrival(String arrival){
 
-        return error;
+        this.arrival = arrival;
     }
 
-    public void setError(String error){
+    public String getArrival(){
 
-        this.error = error;
+        return arrival;
     }
 }

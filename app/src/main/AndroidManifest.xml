@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ArticleActivity" />
         <activity android:name=".FlightActivity" />
+        <activity android:name=".EmptyFActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
