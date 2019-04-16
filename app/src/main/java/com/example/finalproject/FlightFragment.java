@@ -22,7 +22,7 @@ public class FlightFragment extends Fragment {
 
         //all the flight data to the textviews using the bundle
         TextView info = (TextView)result.findViewById(R.id.frag_info);
-        info.setText("Current flight code: " + flightData.getString("info"));
+        info.setText("Current flight code: " + flightData.getString("info").toUpperCase());
 
         TextView departure = (TextView)result.findViewById(R.id.frag_departure);
         departure.setText(flightData.getString("departure"));

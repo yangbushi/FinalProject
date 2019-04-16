@@ -1,12 +1,12 @@
 package com.example.finalproject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -92,11 +92,11 @@ public class FlightActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.radio_dep:
-                        API = "http://aviation-edge.com/v2/public/flights?key=fd08c7-ad3648&depIata=" + flightText.getText().toString();
+                        API = "http://aviation-edge.com/v2/public/flights?key=8e0a99-d48b74&depIata=" + flightText.getText().toString().toUpperCase();
                         break;
 
                     case R.id.radio_arr:
-                        API = "http://aviation-edge.com/v2/public/flights?key=fd08c7-ad3648&arrIata=" + flightText.getText().toString();
+                        API = "http://aviation-edge.com/v2/public/flights?key=8e0a99-d48b74&arrIata=" + flightText.getText().toString().toUpperCase();
                         break;
                 }
             }
@@ -123,6 +123,8 @@ public class FlightActivity extends AppCompatActivity {
 
                     //this closes the textbox once the user pressed the CHECK button
                     flightText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                    fListView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged(); // update adapter with changed data
                 }
             }
         });
@@ -286,7 +288,7 @@ public class FlightActivity extends AppCompatActivity {
 
 
 
-            return "Finished..";
+            return "Finished.";
         }
 
         @Override
@@ -348,12 +350,36 @@ public class FlightActivity extends AppCompatActivity {
             onCreate(db);
         }
 
+        public DatabaseHelper open(){
+
+            db = getWritableDatabase();
+            return this;
+        }
+
         public void close(){
 
             db.close();
         }
 
-        public Cursor getFlight(){
+        public long insertFlight(String departure, String arrival, String speed, String altitude, String status){
+
+            open();
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(KEY_ROW_DEP, departure);
+            Log.e("departure insertFlight ", "" + departure);
+            initialValues.put(KEY_ROW_ARR, arrival);
+            Log.e("Arrvial insertFlight ", "" + arrival);
+            initialValues.put(KEY_ROW_SPEED, speed);
+            Log.e("speed insertFlight ", "" + speed);
+            initialValues.put(KEY_ROW_ALT, altitude);
+            Log.e("alitude insertFlight ", "" + altitude);
+            initialValues.put(KEY_ROW_STATUS, status);
+            Log.e("status insertFlight ", "" + status);
+
+            return db.insert(DATABASE_TABLE, null, initialValues);
+        }
+
+        public Cursor getFlights(){
 
             return db.query(DATABASE_TABLE, new String[] {KEY_ROW_ID, KEY_ROW_DEP, KEY_ROW_ARR, KEY_ROW_SPEED, KEY_ROW_ALT, KEY_ROW_STATUS},
                     null, null, null, null, null);

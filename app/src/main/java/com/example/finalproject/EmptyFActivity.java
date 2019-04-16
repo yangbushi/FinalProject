@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -73,18 +74,44 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
                 flight.setAltitude(dataToPass.getString("altitude"));
                 flight.setStatus(dataToPass.getString("status"));
 
+                db.insertFlight(dataToPass.getString("departure"),
+                        dataToPass.getString("arrival"),
+                        dataToPass.getString("speed"),
+                        dataToPass.getString("altitude"),
+                        dataToPass.getString("status"));
+
                 flights.add(flight);
                 fragList.setAdapter(fragAdapter);
                 fragAdapter.notifyDataSetChanged();
             }
         });
 
+        db.open();
+        Cursor c = db.getFlights();
+
+        for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+
+//            Flight dataFlight = new Flight();
+//
+//            dataFlight.setDeparture(c.getString(c.getColumnIndex(db.KEY_ROW_DEP)));
+//            dataFlight.setArrival(c.getString(c.getColumnIndex(db.KEY_ROW_ARR)));
+//            dataFlight.setSpeed(c.getString(c.getColumnIndex(db.KEY_ROW_SPEED)));
+//            dataFlight.setAltitude(c.getString(c.getColumnIndex(db.KEY_ROW_ALT)));
+//            dataFlight.setStatus(c.getString(c.getColumnIndex(db.KEY_ROW_STATUS)));
+//
+//            flights.add(dataFlight);
+
+            flights.add(new Flight(c.getString(c.getColumnIndex(db.KEY_ROW_DEP)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_ARR)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_SPEED)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_ALT)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_STATUS))));
+        }
+        db.close();
+
         fragAdapter = new FlightActivity.FlightFragListAdapter(this, flights);
         fragList.setAdapter(fragAdapter);
         fragAdapter.notifyDataSetChanged();
-
-        Log.e("before adapter", " plerae");
-
 
         delButton.setOnClickListener(new View.OnClickListener() {   //Delete Button-----------
             @Override
@@ -93,14 +120,4 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
             }
         });
     }
-
-//    public void flightData(Flight flight){
-//
-//            flights.add(flight);
-//            Log.e("flightData ", "Method has been accessed");
-//            Log.e("Testing flightData ", "" + flights.get(0).getSpeed());
-//            Log.e("Testin flight ", " " + flight.getDeparture());
-//        Log.e("Testin speed ", " " + flight.getSpeed());
-//        Log.e("Testin arrival ", " " + flight.getArrival());
-//    }
 }
