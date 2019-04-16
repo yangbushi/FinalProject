@@ -12,9 +12,9 @@
     <string name="menu_news">News</string>
     <string name="menu_flight">Flights</string>
     <string name="menu_article">Articles</string>
-    <string name="menu_search">Search</string>
+    <string name="menu_about">About</string>
     <string name="menu_help">Help</string>
-    <string name="menu_saved">Saved list</string>
+    <string name="menu_search">Search</string>
 
     <!-- the strings for the article page -->
     <string name="article_test">Articles</string>
@@ -35,5 +35,8 @@
     <!-- the strings for the general use -->
     <string name="confirm">Yes</string>
     <string name="ok">OK</string>
-
+  <string name="save">save</string>
+    <string name="delete">delet</string>
+   <string name="menu_help">Help</string>
+    <string name="menu_saved">Saved list</string>
 </resources>
