@@ -1,9 +1,16 @@
 package com.example.finalproject;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -22,7 +29,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +54,7 @@ import java.net.URL;
  * The main entry of 'New York Times Article Search'
  * @author George Yang
  * @version 1.0.0
+ * @
  */
 public class ArticleActivity extends AppCompatActivity {
 
@@ -58,7 +72,15 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ListAdapter adapter;
 
-    // test
+    private String toastMessage;
+
+    public static final String ARTICLE_ID = "ID";
+    public static final String ARTICLE_TITLE = "TITLE";
+    public static final String ARTICLE_LINK = "LINK";
+    public static final String ARTICLE_ICON = "ICON";
+    public static final String ARTICLE_TEXT = "TEXT";
+    public static final String ARTICLE_LIST_TYPE = "TYPE";
+    public static final int ARTICLE_TEXT_ACTIVITY = 345;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +101,46 @@ public class ArticleActivity extends AppCompatActivity {
         articleList = (ListView)findViewById(R.id.articleList);
         articleList.setAdapter(adapter);
 
+        // turn to article detail fragment
+        boolean isTablet = findViewById(R.id.articleTextFrag) != null;
+        articleList.setOnItemClickListener((list, item, position, id) -> { // refer to prof's week8
+            Bundle dataToPass = new Bundle();
+            Article article = searchArticles.get(position);
+            dataToPass.putString(ARTICLE_LINK, article.getLink() );
+            dataToPass.putString(ARTICLE_TITLE, article.getTitle());
+            dataToPass.putString(ARTICLE_ICON, article.getIconName());
+            dataToPass.putString(ARTICLE_TEXT, article.getText());
+            dataToPass.putString(ARTICLE_LIST_TYPE, "search");
+            dataToPass.putLong(ARTICLE_ID, id);
+
+            if(isTablet) // show fragment directly
+            {
+                ArticleTextFragment fragment = new ArticleTextFragment(); //add a DetailFragment
+                fragment.setArguments( dataToPass ); //pass it a bundle for information
+                fragment.setTablet(true);  //tell the fragment if it's running on a tablet or not
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.articleTextFrag, fragment) //Add the fragment in FrameLayout
+                        .addToBackStack("AnyName") //make the back button undo the transaction
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone, start empty activity which then calls fragment
+            {
+                Intent nextActivity = new Intent(ArticleActivity.this, ArticleTextActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivityForResult(nextActivity, ARTICLE_TEXT_ACTIVITY); //make the transition
+            }
+        });
+
+
+        // saved query
+        SharedPreferences prefs = getSharedPreferences("shared.txt", Context.MODE_PRIVATE);
+        String preQuery = prefs.getString("query", "");
+
+        // search articles by typing key words or saved query
         sView = (SearchView)findViewById(R.id.search_article);
+        sView.setQuery(preQuery, false);
+
         sView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -105,31 +166,15 @@ public class ArticleActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * load saved articles from database
-     * copy mostly from professor's week5
-     */
-    private void loadArticlesFromDB(SQLiteDatabase db) {
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-        //query all the results from the database:
-        String [] columns = {MyDatabaseOpenHelper.COL_ARTICLE_ID, MyDatabaseOpenHelper.COL_ARTICLE_TITLE, MyDatabaseOpenHelper.COL_ARTICLE_LINK};
-        Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_ARTICLE, columns, null, null, null, null, null, null);
-
-        //find the column indices:
-        int linkIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ARTICLE_LINK);
-        int titleColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ARTICLE_TITLE);
-        int idIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ARTICLE_ID);
-
-        //iterate over the results, return true if there is a next item:
-        while(results.moveToNext())
-        {
-            int id = results.getInt(idIndex);
-            String title = results.getString(titleColIndex);
-            String link = results.getString(linkIndex);
-
-            //add the new article to the array list:
-            savedArticles.add(new Article(id, title, link));
-        }
+        // save the current query into file
+        SharedPreferences prefs = getSharedPreferences("shared.txt", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("query", sView.getQuery().toString());
+        edit.commit();
     }
 
     @Override
@@ -167,6 +212,33 @@ public class ArticleActivity extends AppCompatActivity {
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
+                break;
+            case R.id.menu_help:
+                View middle = getLayoutInflater().inflate(R.layout.dialog_article, null);
+                TextView author = (TextView)middle.findViewById(R.id.article_author);
+                TextView version = (TextView)middle.findViewById(R.id.article_version);
+                TextView instruction = (TextView)middle.findViewById(R.id.article_instruction);
+
+                author.setText(getString(R.string.article_author) + "\tGeorge Yang");
+                version.setText(getString(R.string.article_version) + "\t1.0.0");
+                instruction.setText(getString(R.string.article_instruction)
+                        + "\n1. input key words to search related articles from New York Times \n"
+                        + "2. save articles from the search result list \n"
+                        + "3. modify the saved list");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("")
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).setView(middle);
+
+                builder.create().show();
+                break;
+
+            case R.id.menu_saved:
+                Intent articleSavedIntent = new Intent(this, ArticleSavedActivity.class);
+                startActivity(articleSavedIntent);
                 break;
         }
 
@@ -242,12 +314,29 @@ public class ArticleActivity extends AppCompatActivity {
                 JSONObject jObject = new JSONObject(result);
                 JSONArray jsonArray = jObject.getJSONObject("response").getJSONArray("docs");
 
-                String title, link;
+                String title, link, iconName = "", text;
                 int articleNumber = jsonArray.length();
                 for(int i = 0; i < articleNumber; i++) { // loop the array to get article items
                     title = ((JSONObject)(jsonArray.get(i))).getJSONObject("headline").getString("main");
                     link = ((JSONObject)(jsonArray.get(i))).getString("web_url");
-                    Article article = new Article(i, title, link);
+                    text = ((JSONObject)(jsonArray.get(i))).getString("snippet");
+                    JSONArray multimedia = ((JSONObject)(jsonArray.get(i))).getJSONArray("multimedia");
+                    if(multimedia.length() != 0) { // there is a picture
+                        JSONObject firstMultimedia = (JSONObject) (multimedia.get(0));
+                        String iconUrl = firstMultimedia.getString("url");
+                        iconName = iconUrl.substring(iconUrl.lastIndexOf('/') + 1,
+                                iconUrl.lastIndexOf('.') - 1); // get the picture name excluding path and type
+                        iconName += ".png";
+
+                        if(!fileExistance(iconName)) { // the icon file does not exist, download and save
+                            Log.d("icon: ", "icon not found, download it");
+                            downloadAndSaveIcon(iconUrl, iconName);
+                        } else {
+                            Log.d("icon: ", "icon found");
+                        }
+                    }
+
+                    Article article = new Article(i, title, link, iconName, text);
                     searchArticles.add(article);
 
                     publishProgress((i+1)/articleNumber*100);
@@ -263,6 +352,54 @@ public class ArticleActivity extends AppCompatActivity {
             return "Finished task";
         }
 
+        public boolean fileExistance(String fname){
+            File file = getBaseContext().getFileStreamPath(fname);
+            return file.exists();
+        }
+
+        public void downloadAndSaveIcon(String iconfile, String iconName) {
+
+            // dowload icon
+
+            Bitmap image = null;
+            URL url = null;
+
+            try {
+                url = new URL("https://www.nytimes.com/" + iconfile);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            HttpURLConnection connection = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                int responseCode = 0;
+                responseCode = connection.getResponseCode();
+                if (responseCode == 200) {
+                    image = BitmapFactory.decodeStream(connection.getInputStream());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // save icon to local storage
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = openFileOutput( iconName, Context.MODE_PRIVATE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            image.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
@@ -278,5 +415,45 @@ public class ArticleActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ARTICLE_TEXT_ACTIVITY) // return from article detail page
+        {
+            if(resultCode == RESULT_OK) //if you hit the save button instead of back button
+            {
+                long id = data.getLongExtra(ARTICLE_ID, 0);
+                String title = data.getStringExtra(ARTICLE_TITLE);
+                String link = data.getStringExtra(ARTICLE_LINK);
+                String icon = data.getStringExtra(ARTICLE_ICON);
+                String text = data.getStringExtra(ARTICLE_TEXT);
+
+                saveArticle((int)id, title, link, icon, text);
+            }
+        }
+    }
+
+    /**
+     * save article to saved list
+     * @param id
+     */
+    public void saveArticle(int id, String title, String link, String icon, String text)
+    {
+        Log.i("save this article:" , " id="+id);
+
+        //add to the database and get the new ID
+        ContentValues newRowValues = new ContentValues();
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_TITLE, title);
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_LINK, link);
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_ICON, icon);
+        newRowValues.put(MyDatabaseOpenHelper.COL_ARTICLE_TEXT, text);
+
+        //insert in the database:
+        long newId = db.insert(MyDatabaseOpenHelper.TABLE_ARTICLE, null, newRowValues);
+
+        toastMessage = getString(R.string.article_toast);
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+
     }
 }
