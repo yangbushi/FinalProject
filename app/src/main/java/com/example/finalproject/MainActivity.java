@@ -30,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
             Intent articleIntent = new Intent(this, ArticleActivity.class);
             startActivity(articleIntent);
         });
+//go to  news_feed
+        Button feedButton = (Button)findViewById(R.id.news_button);
+        feedButton.setOnClickListener(v->{
+            Intent feedIntent = new Intent(this, NewsFeedMain.class);
+            startActivity(feedIntent);
+        });
     }
 
     @Override
@@ -59,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
+                Intent feedIntent = new Intent(this, NewsFeedMain.class);
+                startActivity(feedIntent);
                 break;
         }
 
