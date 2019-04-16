@@ -22,16 +22,22 @@
         app:showAsAction="always"/>
 
     <item android:id="@+id/menu_article"
-        android:title="@string/menu_article"
+        android:title="Articl"
         android:icon="@drawable/article"
         android:orderInCategory="400"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/menu_help"
+   <item android:id="@+id/menu_about"
+        android:title="@string/menu_about"
+        android:orderInCategory="500"
+        app:showAsAction="never"/>
+   <item android:id="@+id/menu_help"
         app:showAsAction="never"
         android:title="@string/menu_help"/>
 
     <item android:id="@+id/menu_saved"
         app:showAsAction="never"
         android:title="@string/menu_saved"/>
+
+
 </menu>

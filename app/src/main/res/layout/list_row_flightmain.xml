@@ -4,15 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-android:orientation="vertical"
+    android:orientation="vertical"
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
+
     <ImageView
         android:id="@+id/flightRowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
- android:layout_marginRight="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="40dp"
         app:srcCompat="@drawable/flight"/>
@@ -21,33 +21,16 @@ android:orientation="vertical"
         android:id="@+id/flightRowDeparture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"/>
+        android:layout_toRightOf="@id/flightRowIcon"
+        android:paddingTop="28dp"
+        android:textFontWeight="4"/>
 
     <TextView
         android:id="@+id/flightRowArrival"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowDeparture"/>
+        android:layout_below="@id/flightRowDeparture"
+        android:textFontWeight="4"/>
 
-    <TextView
-        android:id="@+id/flightRowSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowArrival"/>
-
-    <TextView
-        android:id="@+id/flightRowAltitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowSpeed"/>
-
-    <TextView
-        android:id="@+id/flightRowStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowAltitude"/>
 </RelativeLayout>
