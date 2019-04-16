@@ -20,7 +20,7 @@ public class FlightListAdapter extends ArrayAdapter<Flight> {
     private Context fContext;
     private List<Flight> flightList;
 
-    public FlightListAdapter(Context context, int resource, List<Flight> list) {
+    public FlightListAdapter(Context context, List<Flight> list) {
         super(context, 0, list);
 
         fContext = context;
@@ -32,12 +32,15 @@ public class FlightListAdapter extends ArrayAdapter<Flight> {
 
         View listItem = convertView;
 
-        listItem = LayoutInflater.from(fContext).inflate(R.layout.list_row_flight, parent, false);
+        listItem = LayoutInflater.from(fContext).inflate(R.layout.list_row_flightmain, parent, false);
 
         Flight currentFlight = getItem(position);
 
-        TextView flights = (TextView)listItem.findViewById(R.id.flightRowText);
-        flights.setText(currentFlight.getFlight_number() + " " + currentFlight.getInfo());
+        TextView fDeparture = (TextView)listItem.findViewById(R.id.flightRowDeparture);
+        fDeparture.setText(flightList.get(position).getDeparture());
+
+        TextView fArrival = (TextView)listItem.findViewById(R.id.flightRowArrival);
+        fArrival.setText(flightList.get(position).getArrival());
 
         return listItem;
     }

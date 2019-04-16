@@ -21,34 +21,16 @@
         android:id="@+id/flightRowDeparture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"/>
+        android:layout_toRightOf="@id/flightRowIcon"
+        android:paddingTop="28dp"
+        android:textFontWeight="4"/>
 
     <TextView
         android:id="@+id/flightRowArrival"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowDeparture"/>
-
-    <TextView
-        android:id="@+id/flightRowSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowArrival"/>
-
-    <TextView
-        android:id="@+id/flightRowAltitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowSpeed"/>
-
-    <TextView
-        android:id="@+id/flightRowStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/flightRowIcon"
-        android:layout_below="@id/flightRowAltitude"/>
+        android:layout_below="@id/flightRowDeparture"
+        android:textFontWeight="4"/>
 
 </RelativeLayout>
