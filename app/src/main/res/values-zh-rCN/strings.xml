@@ -38,6 +38,6 @@
     <string name="ok">知道了</string>
  <string name="save">保存</string>
     <string name="delete">删除</string>
- <string name="menu_help">帮助</string>
+
     <string name="menu_saved">保存的列表</string>
 </resources>
