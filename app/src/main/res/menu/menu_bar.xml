@@ -38,9 +38,6 @@
     <item android:id="@+id/menu_saved"
         app:showAsAction="never"
         android:title="@string/menu_saved"/>
-  <item android:id="@+id/menu_myhelp"
-        android:title="@string/menu_myhelp"
-        android:orderInCategory="600"
-        app:showAsAction="never"/>
+
 
 </menu>

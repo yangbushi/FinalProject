@@ -37,6 +37,6 @@
     <string name="ok">OK</string>
   <string name="save">save</string>
     <string name="delete">delet</string>
-   <string name="menu_help">Help</string>
+
     <string name="menu_saved">Saved list</string>
 </resources>

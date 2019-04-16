@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
 
-        android:theme="@style/AppTheme"
-  <activity android:name=".view_favorite"></activity>
+        android:theme="@style/AppTheme">
+
         <activity android:name=".NewsFeedItem" />
         <activity android:name=".NewsFeedMain" />
-  <activity android:name=".ArticleTextActivity"></activity>
+        <activity android:name=".ArticleTextActivity"></activity>
         <activity android:name=".ArticleActivity" />
         <activity android:name=".ArticleSavedActivity" />
         <activity android:name=".FlightActivity" />
