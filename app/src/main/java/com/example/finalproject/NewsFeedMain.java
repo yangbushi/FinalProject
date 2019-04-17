@@ -237,6 +237,8 @@ public class NewsFeedMain  extends AppCompatActivity {
                 startActivity(articleIntent);
                 break;
             case R.id.menu_dic:
+                Intent dictIntent = new Intent(this, DictActivity.class);
+                startActivity(dictIntent);
                 break;
             case R.id.menu_flight:
                 Intent flightIntent = new Intent(this, FlightActivity.class);

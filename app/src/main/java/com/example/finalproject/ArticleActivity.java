@@ -206,12 +206,16 @@ public class ArticleActivity extends AppCompatActivity {
                 startActivity(articleIntent);
                 break;
             case R.id.menu_dic:
+                Intent dictIntent = new Intent(this, DictActivity.class);
+                startActivity(dictIntent);
                 break;
             case R.id.menu_flight:
                 Intent flightIntent = new Intent(this, FlightActivity.class);
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
+                Intent feedIntent = new Intent(this, NewsFeedMain.class);
+                startActivity(feedIntent);
                 break;
             case R.id.menu_help:
                 View middle = getLayoutInflater().inflate(R.layout.dialog_article, null);

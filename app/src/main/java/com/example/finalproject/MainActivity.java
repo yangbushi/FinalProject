@@ -36,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
             Intent feedIntent = new Intent(this, NewsFeedMain.class);
             startActivity(feedIntent);
         });
+
+        Button dicButton = (Button)findViewById(R.id.dic_button);
+        dicButton.setOnClickListener(v->{
+            Intent dictIntent = new Intent(this, DictActivity.class);
+            startActivity(dictIntent);
+        });
+
+        Button flightButton = (Button)findViewById(R.id.flight_button);
+        flightButton.setOnClickListener(v->{
+            Intent flightIntent = new Intent(this, FlightActivity.class);
+            startActivity(flightIntent);
+        });
     }
 
     @Override
