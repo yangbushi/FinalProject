@@ -14,9 +14,13 @@
 
         android:theme="@style/AppTheme">
 
+        <activity android:name=".DictActivity"></activity>
+
+
         <activity android:name=".NewsFeedItem" />
         <activity android:name=".NewsFeedMain" />
         <activity android:name=".ArticleTextActivity"></activity>
+
         <activity android:name=".ArticleActivity" />
         <activity android:name=".ArticleSavedActivity" />
         <activity android:name=".FlightActivity" />
