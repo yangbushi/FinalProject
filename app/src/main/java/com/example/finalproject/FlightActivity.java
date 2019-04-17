@@ -52,9 +52,6 @@ import java.util.List;
 public class FlightActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 6;
-    private String arrivalAPI;
-    //private String temp = "http://torunski.ca/flights.json";
-    private String departAPI; //= "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&depIata=YOW";
     private String API;
     private ListView fListView;
     ProgressBar progressBar;
@@ -67,6 +64,7 @@ public class FlightActivity extends AppCompatActivity {
     private Flight flight;
     private List<Flight> flights;
     private Bundle dataToPass;
+    private Toolbar toolbar;
     EmptyFActivity emptyFActivity = new EmptyFActivity();
     private String departure, arrival, speed, altitude, status;
 
@@ -76,7 +74,7 @@ public class FlightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         fListView = (ListView)findViewById(R.id.flight_View);
@@ -138,14 +136,6 @@ public class FlightActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object listItem = fListView.getItemAtPosition(position);
-
-                //data for the EmptyListview
-//                departure = flights.get(position).getDeparture();
-//                arrival = flights.get(position).getArrival();
-//                speed = flights.get(position).getSpeed();
-//                altitude = flights.get(position).getAltitude();
-//                status = flights.get(position).getStatus();
 
                 dataToPass = new Bundle();
 
@@ -158,10 +148,6 @@ public class FlightActivity extends AppCompatActivity {
                 dataToPass.putString("status", flights.get(position).getStatus());
 
                 flight = new Flight(departure, arrival, speed, altitude, status);
-
-               // emptyFActivity.flightData(flight);
-                Log.e("FlightTest ", "" + flight.getDeparture());
-                Log.e("FlightTest ", "" + flight.getArrival());
 
                 //Jump to the fragment
                 Intent nextActivity = new Intent(FlightActivity.this, EmptyFActivity.class); //create and empty class??---------------------------
@@ -195,6 +181,12 @@ public class FlightActivity extends AppCompatActivity {
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
+                break;
+            case R.id.menu_saved:
+                Intent listIntent = new Intent(this, EmptyFActivity.class);
+                startActivity(listIntent);
+                break;
+            case R.id.menu_help:
                 break;
         }
 
@@ -383,6 +375,11 @@ public class FlightActivity extends AppCompatActivity {
 
             return db.query(DATABASE_TABLE, new String[] {KEY_ROW_ID, KEY_ROW_DEP, KEY_ROW_ARR, KEY_ROW_SPEED, KEY_ROW_ALT, KEY_ROW_STATUS},
                     null, null, null, null, null);
+        }
+
+        public void deleteID(int id){
+
+            db.delete(DATABASE_TABLE, KEY_ROW_ID + " = " + id, null);
         }
 
 
