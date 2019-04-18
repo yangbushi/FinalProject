@@ -2,11 +2,13 @@ package com.example.finalproject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +60,7 @@ public class FlightActivity extends AppCompatActivity {
     private FlightListAdapter adapter;
     private Button checkButton;
     private EditText flightText;
-    private TextView textView;
+    private TextView textView, text1, text2, text3;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private Flight flight;
@@ -187,6 +189,26 @@ public class FlightActivity extends AppCompatActivity {
                 startActivity(listIntent);
                 break;
             case R.id.menu_help:
+                LayoutInflater inflater = this.getLayoutInflater();
+                View view = inflater.inflate(R.layout.flight_customdialogtext, null);
+                text1 = (TextView) view.findViewById(R.id.stepOne);
+                text2 = (TextView) view.findViewById(R.id.stepTwo);
+                text3 = (TextView) view.findViewById(R.id.stepThree);
+
+                text1.setText("1. Step one");
+                text2.setText("2. Step two");
+                text3.setText("3. Step three");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setView(view);
+                builder.setMessage("Welcome to the Flight Tracker")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
                 break;
         }
 

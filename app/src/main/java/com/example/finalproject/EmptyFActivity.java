@@ -1,8 +1,10 @@
 package com.example.finalproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +30,7 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
     private String status;
     private boolean isSaved = false;
     private FlightFragment fFragment;
-    private int itemPosition = -1;
+    private int itemPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,12 +46,14 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
 
         fFragment = new FlightFragment();
 
-        fFragment.setArguments(dataToPass);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frag_flightFrame, fFragment)
-                .addToBackStack("Flight")
-                .commit();
+        if(dataToPass != null) {
+            fFragment.setArguments(dataToPass);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.frag_flightFrame, fFragment)
+                    .addToBackStack("Flight")
+                    .commit();
+        }
 
         fragList = (ListView)findViewById(R.id.frag_listView);
         backButton = (Button)findViewById(R.id.frag_backButton);
@@ -127,12 +131,21 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
             @Override
             public void onClick(View v) {
 
-                db.open();
-                db.deleteID(itemPosition);
-                db.close();
-                flights.remove(itemPosition - 1);
-                fragList.setAdapter(fragAdapter);
-                fragAdapter.notifyDataSetChanged();
+                Snackbar.make(findViewById(R.id.frag_toolbar),
+                        "Confirm Delete: ", Snackbar.LENGTH_LONG)
+                        .setAction("Confirm", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                db.open();
+                                db.deleteID(itemPosition);
+                                db.close();
+                                if(flights!= null) {
+                                    flights.remove(itemPosition - 1);
+                                }
+                                fragList.setAdapter(fragAdapter);
+                                fragAdapter.notifyDataSetChanged();
+                            }
+                        }).show();
             }
         });
 
@@ -140,16 +153,6 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
         Cursor c = db.getFlights();
 
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-
-//            Flight dataFlight = new Flight();
-//
-//            dataFlight.setDeparture(c.getString(c.getColumnIndex(db.KEY_ROW_DEP)));
-//            dataFlight.setArrival(c.getString(c.getColumnIndex(db.KEY_ROW_ARR)));
-//            dataFlight.setSpeed(c.getString(c.getColumnIndex(db.KEY_ROW_SPEED)));
-//            dataFlight.setAltitude(c.getString(c.getColumnIndex(db.KEY_ROW_ALT)));
-//            dataFlight.setStatus(c.getString(c.getColumnIndex(db.KEY_ROW_STATUS)));
-//
-//            flights.add(dataFlight);
 
             flights.add(new Flight(c.getString(c.getColumnIndex(db.KEY_ROW_DEP)),
                     c.getString(c.getColumnIndex(db.KEY_ROW_ARR)),

@@ -22,7 +22,6 @@ public class FlightFragment extends Fragment {
         View result = inflater.inflate(R.layout.frag_flight, container, false);
 
         //all the flight data to the textviews using the bundle
-        try {
             if (flightData.getString("info") != null) {
                 TextView info = (TextView) result.findViewById(R.id.frag_info);
                 info.setText("Current flight code: " + flightData.getString("info").toUpperCase());
@@ -42,10 +41,6 @@ public class FlightFragment extends Fragment {
 
             TextView status = (TextView)result.findViewById(R.id.frag_status);
             status.setText(flightData.getString("status"));
-
-        }catch(Exception e){
-            Log.e("Caught exception ", "using list menu");
-        }
 
         return result;
     }
