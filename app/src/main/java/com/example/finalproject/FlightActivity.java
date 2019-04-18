@@ -1,12 +1,14 @@
 package com.example.finalproject;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -52,21 +54,19 @@ import java.util.List;
 public class FlightActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 6;
-    private String arrivalAPI;
-    //private String temp = "http://torunski.ca/flights.json";
-    private String departAPI; //= "http://aviation-edge.com/v2/public/flights?key=e66fe0-74b486&depIata=YOW";
     private String API;
     private ListView fListView;
     ProgressBar progressBar;
     private FlightListAdapter adapter;
     private Button checkButton;
     private EditText flightText;
-    private TextView textView;
+    private TextView textView, text1, text2, text3, text4, text5, text6;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private Flight flight;
     private List<Flight> flights;
     private Bundle dataToPass;
+    private Toolbar toolbar;
     EmptyFActivity emptyFActivity = new EmptyFActivity();
     private String departure, arrival, speed, altitude, status;
 
@@ -76,7 +76,7 @@ public class FlightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flight);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         fListView = (ListView)findViewById(R.id.flight_View);
@@ -92,11 +92,11 @@ public class FlightActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.radio_dep:
-                        API = "http://aviation-edge.com/v2/public/flights?key=fd08c7-ad3648&depIata=" + flightText.getText().toString();
+                        API = "http://aviation-edge.com/v2/public/flights?key=8e0a99-d48b74&depIata=" + flightText.getText().toString().toUpperCase();
                         break;
 
                     case R.id.radio_arr:
-                        API = "http://aviation-edge.com/v2/public/flights?key=fd08c7-ad3648&arrIata=" + flightText.getText().toString();
+                        API = "http://aviation-edge.com/v2/public/flights?key=8e0a99-d48b74&arrIata=" + flightText.getText().toString().toUpperCase();
                         break;
                 }
             }
@@ -123,6 +123,8 @@ public class FlightActivity extends AppCompatActivity {
 
                     //this closes the textbox once the user pressed the CHECK button
                     flightText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                    fListView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged(); // update adapter with changed data
                 }
             }
         });
@@ -136,14 +138,6 @@ public class FlightActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object listItem = fListView.getItemAtPosition(position);
-
-                //data for the EmptyListview
-//                departure = flights.get(position).getDeparture();
-//                arrival = flights.get(position).getArrival();
-//                speed = flights.get(position).getSpeed();
-//                altitude = flights.get(position).getAltitude();
-//                status = flights.get(position).getStatus();
 
                 dataToPass = new Bundle();
 
@@ -156,10 +150,6 @@ public class FlightActivity extends AppCompatActivity {
                 dataToPass.putString("status", flights.get(position).getStatus());
 
                 flight = new Flight(departure, arrival, speed, altitude, status);
-
-               // emptyFActivity.flightData(flight);
-                Log.e("FlightTest ", "" + flight.getDeparture());
-                Log.e("FlightTest ", "" + flight.getArrival());
 
                 //Jump to the fragment
                 Intent nextActivity = new Intent(FlightActivity.this, EmptyFActivity.class); //create and empty class??---------------------------
@@ -197,6 +187,38 @@ public class FlightActivity extends AppCompatActivity {
             case R.id.menu_news:
                 Intent feedIntent = new Intent(this, NewsFeedMain.class);
                 startActivity(feedIntent);
+                break;
+            case R.id.menu_saved:
+                Intent listIntent = new Intent(this, EmptyFActivity.class);
+                startActivity(listIntent);
+                break;
+            case R.id.menu_help:
+                LayoutInflater inflater = this.getLayoutInflater();
+                View view = inflater.inflate(R.layout.flight_customdialogtext, null);
+                text1 = (TextView) view.findViewById(R.id.stepOne);
+                text2 = (TextView) view.findViewById(R.id.stepTwo);
+                text3 = (TextView) view.findViewById(R.id.stepThree);
+                text4 = (TextView) view.findViewById(R.id.stepFour);
+                text5 = (TextView) view.findViewById(R.id.stepFive);
+                text6 = (TextView) view.findViewById(R.id.stepSix);
+
+                text1.setText("Author: Dustin Horricks");
+                text2.setText("Version Number: 1.0.0");
+                text3.setText("Step one: Select Departure or Arrival from the Radio Buttons.");
+                text4.setText("Step two: Enter the flight number into the text box, press Check.");
+                text5.setText("Step three: Select a flight to view more data.");
+                text6.setText("Step four: Save or delete your flight data with buttons.");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setView(view);
+                builder.setMessage("Welcome to the Flight Tracker")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
                 break;
         }
 
@@ -290,7 +312,7 @@ public class FlightActivity extends AppCompatActivity {
 
 
 
-            return "Finished..";
+            return "Finished.";
         }
 
         @Override
@@ -352,15 +374,44 @@ public class FlightActivity extends AppCompatActivity {
             onCreate(db);
         }
 
+        public DatabaseHelper open(){
+
+            db = getWritableDatabase();
+            return this;
+        }
+
         public void close(){
 
             db.close();
         }
 
-        public Cursor getFlight(){
+        public long insertFlight(String departure, String arrival, String speed, String altitude, String status){
+
+            open();
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(KEY_ROW_DEP, departure);
+            Log.e("departure insertFlight ", "" + departure);
+            initialValues.put(KEY_ROW_ARR, arrival);
+            Log.e("Arrvial insertFlight ", "" + arrival);
+            initialValues.put(KEY_ROW_SPEED, speed);
+            Log.e("speed insertFlight ", "" + speed);
+            initialValues.put(KEY_ROW_ALT, altitude);
+            Log.e("alitude insertFlight ", "" + altitude);
+            initialValues.put(KEY_ROW_STATUS, status);
+            Log.e("status insertFlight ", "" + status);
+
+            return db.insert(DATABASE_TABLE, null, initialValues);
+        }
+
+        public Cursor getFlights(){
 
             return db.query(DATABASE_TABLE, new String[] {KEY_ROW_ID, KEY_ROW_DEP, KEY_ROW_ARR, KEY_ROW_SPEED, KEY_ROW_ALT, KEY_ROW_STATUS},
                     null, null, null, null, null);
+        }
+
+        public void deleteID(int id){
+
+            db.delete(DATABASE_TABLE, KEY_ROW_ID + " = " + id, null);
         }
 
 

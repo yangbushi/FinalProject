@@ -1,10 +1,14 @@
 package com.example.finalproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -25,6 +29,8 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
     private String speed;
     private String status;
     private boolean isSaved = false;
+    private FlightFragment fFragment;
+    private int itemPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -38,13 +44,16 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
 
         Bundle dataToPass = getIntent().getExtras();
 
-        FlightFragment fFragment = new FlightFragment();
-        fFragment.setArguments(dataToPass);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frag_flightFrame, fFragment)
-                .addToBackStack("Flight")
-                .commit();
+        fFragment = new FlightFragment();
+
+        if(dataToPass != null) {
+            fFragment.setArguments(dataToPass);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.frag_flightFrame, fFragment)
+                    .addToBackStack("Flight")
+                    .commit();
+        }
 
         fragList = (ListView)findViewById(R.id.frag_listView);
         backButton = (Button)findViewById(R.id.frag_backButton);
@@ -67,40 +76,95 @@ public class EmptyFActivity extends AppCompatActivity {  //EMPTY ACTIVITY CLASS-
             public void onClick(View v) {
 
                 flight = new Flight();
-                flight.setDeparture(dataToPass.getString("departure"));
-                flight.setArrival(dataToPass.getString("arrival"));
-                flight.setSpeed(dataToPass.getString("speed"));
-                flight.setAltitude(dataToPass.getString("altitude"));
-                flight.setStatus(dataToPass.getString("status"));
 
-                flights.add(flight);
-                fragList.setAdapter(fragAdapter);
-                fragAdapter.notifyDataSetChanged();
+                try {
+
+                    flight.setDeparture(dataToPass.getString("departure"));
+                    flight.setArrival(dataToPass.getString("arrival"));
+                    flight.setSpeed(dataToPass.getString("speed"));
+                    flight.setAltitude(dataToPass.getString("altitude"));
+                    flight.setStatus(dataToPass.getString("status"));
+
+                    db.insertFlight(dataToPass.getString("departure"),
+                            dataToPass.getString("arrival"),
+                            dataToPass.getString("speed"),
+                            dataToPass.getString("altitude"),
+                            dataToPass.getString("status"));
+
+                    flights.add(flight);
+                    fragList.setAdapter(fragAdapter);
+                    fragAdapter.notifyDataSetChanged();
+
+                }catch(Exception e){
+                    Log.e("Already Saved", " error");
+                }
             }
         });
 
-        fragAdapter = new FlightActivity.FlightFragListAdapter(this, flights);
-        fragList.setAdapter(fragAdapter);
-        fragAdapter.notifyDataSetChanged();
+        fragList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Log.e("before adapter", " plerae");
+                Bundle fragBundle = new Bundle();
 
+                fFragment = new FlightFragment();
+
+                fragBundle.putString("departure", flights.get(position).getDeparture());
+                fragBundle.putString("arrival", flights.get(position).getArrival());
+                fragBundle.putString("speed", flights.get(position).getSpeed());
+                fragBundle.putString("altitude", flights.get(position).getAltitude());
+                fragBundle.putString("status", flights.get(position).getStatus());
+
+                fFragment.setArguments(fragBundle);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frag_flightFrame, fFragment)
+                        .addToBackStack("Flight")
+                        .commit();
+
+                itemPosition = position + 1;
+                Log.e("Position of Item ", "" + itemPosition);
+            }
+        });
 
         delButton.setOnClickListener(new View.OnClickListener() {   //Delete Button-----------
             @Override
             public void onClick(View v) {
 
+                Snackbar.make(findViewById(R.id.frag_toolbar),
+                        "Confirm Delete: ", Snackbar.LENGTH_LONG)
+                        .setAction("Confirm", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                db.open();
+                                db.deleteID(itemPosition);
+                                db.close();
+                                if(flights!= null) {
+                                    flights.remove(itemPosition - 1);
+                                }
+                                fragList.setAdapter(fragAdapter);
+                                fragAdapter.notifyDataSetChanged();
+                            }
+                        }).show();
             }
         });
-    }
 
-//    public void flightData(Flight flight){
-//
-//            flights.add(flight);
-//            Log.e("flightData ", "Method has been accessed");
-//            Log.e("Testing flightData ", "" + flights.get(0).getSpeed());
-//            Log.e("Testin flight ", " " + flight.getDeparture());
-//        Log.e("Testin speed ", " " + flight.getSpeed());
-//        Log.e("Testin arrival ", " " + flight.getArrival());
-//    }
+        db.open();
+        Cursor c = db.getFlights();
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+            flights.add(new Flight(c.getString(c.getColumnIndex(db.KEY_ROW_DEP)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_ARR)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_SPEED)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_ALT)),
+                    c.getString(c.getColumnIndex(db.KEY_ROW_STATUS))));
+        }
+        db.close();
+
+        fragAdapter = new FlightActivity.FlightFragListAdapter(this, flights);
+        fragList.setAdapter(fragAdapter);
+        fragAdapter.notifyDataSetChanged();
+
+    }
 }

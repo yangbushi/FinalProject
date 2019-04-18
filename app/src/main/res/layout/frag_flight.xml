@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:background="#c6d1c1">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <FrameLayout
         android:id="@+id/frag_flightFrame"
         android:layout_width="match_parent"
@@ -72,7 +77,7 @@
 
     <TextView
         android:id="@+id/frag_listTitle"
-        android:text="Saved Flights"
+        android:text="@string/frag_saveFlight"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,14 +96,14 @@
     </ListView>
 
     <Button
-        android:text="Delete"
+        android:text="@string/frag_delButton"
         android:id="@+id/frag_buttonDel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
     <Button
-        android:text="Save"
+        android:text="@string/frag_saveButton"
         android:id="@+id/frag_buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +111,7 @@
         android:layout_alignParentRight="true"/>
 
     <Button
-        android:text="Back"
+        android:text="@string/frag_backButton"
         android:id="@+id/frag_backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

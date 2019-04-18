@@ -30,6 +30,10 @@ public class Flight {
     public Flight(String departure, String arrival, String speed, String altitude, String status){
 
         this.departure = departure;
+        this.arrival = arrival;
+        this.speed = speed;
+        this.altitude = altitude;
+        this.status = status;
     }
 
     public Flight(int id, String departure, String arrival, String speed, String altitude, String status){
