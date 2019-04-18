@@ -30,6 +30,24 @@ public class MainActivity extends AppCompatActivity {
             Intent articleIntent = new Intent(this, ArticleActivity.class);
             startActivity(articleIntent);
         });
+//go to  news_feed
+        Button feedButton = (Button)findViewById(R.id.news_button);
+        feedButton.setOnClickListener(v->{
+            Intent feedIntent = new Intent(this, NewsFeedMain.class);
+            startActivity(feedIntent);
+        });
+
+        Button dicButton = (Button)findViewById(R.id.dic_button);
+        dicButton.setOnClickListener(v->{
+            Intent dictIntent = new Intent(this, DictActivity.class);
+            startActivity(dictIntent);
+        });
+
+        Button flightButton = (Button)findViewById(R.id.flight_button);
+        flightButton.setOnClickListener(v->{
+            Intent flightIntent = new Intent(this, FlightActivity.class);
+            startActivity(flightIntent);
+        });
     }
 
     @Override
@@ -53,12 +71,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(articleIntent);
                 break;
             case R.id.menu_dic:
+                Intent dictIntent = new Intent(this, DictActivity.class);
+                startActivity(dictIntent);
                 break;
             case R.id.menu_flight:
                 Intent flightIntent = new Intent(this, FlightActivity.class);
                 startActivity(flightIntent);
                 break;
             case R.id.menu_news:
+                Intent feedIntent = new Intent(this, NewsFeedMain.class);
+                startActivity(feedIntent);
                 break;
         }
 
