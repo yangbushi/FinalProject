@@ -60,7 +60,7 @@ public class FlightActivity extends AppCompatActivity {
     private FlightListAdapter adapter;
     private Button checkButton;
     private EditText flightText;
-    private TextView textView, text1, text2, text3;
+    private TextView textView, text1, text2, text3, text4, text5, text6;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private Flight flight;
@@ -194,10 +194,16 @@ public class FlightActivity extends AppCompatActivity {
                 text1 = (TextView) view.findViewById(R.id.stepOne);
                 text2 = (TextView) view.findViewById(R.id.stepTwo);
                 text3 = (TextView) view.findViewById(R.id.stepThree);
+                text4 = (TextView) view.findViewById(R.id.stepFour);
+                text5 = (TextView) view.findViewById(R.id.stepFive);
+                text6 = (TextView) view.findViewById(R.id.stepSix);
 
-                text1.setText("1. Step one");
-                text2.setText("2. Step two");
-                text3.setText("3. Step three");
+                text1.setText("Author: Dustin Horricks");
+                text2.setText("Version Number: 1.0.0");
+                text3.setText("Step one: Select Departure or Arrival from the Radio Buttons.");
+                text4.setText("Step two: Enter the flight number into the text box, press Check.");
+                text5.setText("Step three: Select a flight to view more data.");
+                text6.setText("Step four: Save or delete your flight data with buttons.");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setView(view);

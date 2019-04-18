@@ -31,6 +31,12 @@
     <!-- the strings for the flight page -->
     <string name="flight_textBox">Enter code here</string>
     <string name="flight_textButton">Check</string>
+    <string name="frag_saveButton">Save</string>
+    <string name="frag_delButton">Delete</string>
+    <string name="frag_backButton">Back</string>
+    <string name="frag_saveFlight">Saved Flights</string>
+    <string name="activity_departureRadio">Departure</string>
+    <string name="activity_arrivalRadio">Arrival</string>
 
     <!-- the strings for the general use -->
     <string name="confirm">Yes</string>

@@ -37,13 +37,13 @@
             android:layout_marginLeft="10dp">
 
             <RadioButton
-                android:text="Departure"
+                android:text="@string/activity_departureRadio"
                 android:id="@+id/radio_dep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <RadioButton
-                android:text="Arrival"
+                android:text="@string/activity_arrivalRadio"
                 android:id="@+id/radio_arr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
