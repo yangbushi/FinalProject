@@ -167,10 +167,11 @@ public class NewsFeedMain  extends AppCompatActivity {
         NewsFeedGet.setNewsFeedExample(this);
         //delete the reserved content before
         Button favorite = (Button)findViewById(R.id.favorite);
-        favorite.setOnClickListener(v->{
+        /**  favorite.setOnClickListener(v->{
             Intent favoriteIntent = new Intent(this, view_favorite.class);
             startActivity(favoriteIntent);
         });
+    */
         //search news from internet
         Button SearchButton = findViewById(R.id.SearchButton);
         SearchButton.setOnClickListener(new View.OnClickListener() {
